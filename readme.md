@@ -1,5 +1,5 @@
 # TDT Sitemap Warmer
-![master](https://github.com/tdtgit/TDT-sitemap-warmer/workflows/.github/workflows/node.js.yml/badge.svg)
+![master](https://github.com/tdtgit/TDT-sitemap-warmer/workflows/Node.js%20CI/badge.svg)
 
 Tiện ích giúp bạn làm ấm (warmup) cache một cách đơn giản và tiện dụng. Việc này khá quan trọng để đảm bảo tốc độ tốt nhất thay vì để người dùng đầu tiên tự làm ấm. Tiện ích này tự động làm ấm tất cả các phiên bản HTML bao gồm `brotli`, `gzip` và hình ảnh bao gồm AVIF, WEBP.
 
