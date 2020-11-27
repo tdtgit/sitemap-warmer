@@ -18,13 +18,8 @@ class Sitemap {
         this.urls[url].images.push(image);
     }
 
-    get list() {
-        return this.urls;
-    }
-
-    urlFilter(seconds) {
-        return Object.filter(this.urls, url => Math.round(Date.now() / 1000) -
-            url.lastMod < seconds)
+    filter(seconds) {
+        return Object.filter(this.urls, url => Math.round(Date.now() / 1000) - url.lastMod < seconds)
     }
 
     toTimestamp(strDate) {
