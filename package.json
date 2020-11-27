@@ -1,13 +1,27 @@
 {
   "name": "datuan-sitemap-warmer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./index.js",
   "dependencies": {
     "node-fetch": "^2.6.1",
     "sitemap-xml-parser": "0.0.2"
   },
   "bin": {
-    "datuan-warmup": "./index.js"
+    "warmup": "./index.js"
   },
-  "preferGlobal": true
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tdtgit/sitemap-warmer.git"
+  },
+  "keywords": [
+    "sitemap",
+    "warmer"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tdtgit/sitemap-warmer/issues"
+  },
+  "homepage": "https://github.com/tdtgit/sitemap-warmer"
 }
