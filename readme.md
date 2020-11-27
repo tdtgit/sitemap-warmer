@@ -1,30 +1,31 @@
-# TDT Sitemap Warmer
-![master](https://github.com/tdtgit/TDT-sitemap-warmer/workflows/Node.js%20CI/badge.svg)
+# DATUAN Sitemap Warmer
+![master](https://github.com/tdtgit/TDT-sitemap-warmer/workflows/Node.js%20CI/badge.svg) [![npm version](https://badge.fury.io/js/datuan-sitemap-warmer.svg)](https://www.npmjs.com/package/datuan-sitemap-warmer)
 
-Tiện ích giúp bạn làm ấm (warmup) cache một cách đơn giản và tiện dụng. Việc này khá quan trọng để đảm bảo tốc độ tốt nhất thay vì để người dùng đầu tiên tự làm ấm. Tiện ích này tự động làm ấm tất cả các phiên bản HTML bao gồm `brotli`, `gzip` và hình ảnh bao gồm AVIF, WEBP.
+Tiện ích giúp bạn làm ấm (warmup) cache một cách đơn giản và tiện dụng. Việc này khá quan trọng để đảm bảo tốc độ tốt nhất thay vì để người dùng
+ đầu tiên tự làm ấm. Tiện ích này tự động làm ấm tất cả các phiên bản HTML bao gồm `brotli`, `gzip` và hình ảnh bao gồm Avif, WebP.
 
 ## Yêu cầu
 * NodeJS 10/12/14
-* Ubuntu/CentOS/*nix
-* Trang có sitemap.xml. Ví dụ: https://datuan.dev/sitemap.xml. Đã kiểm tra và hoạt động với [RankMath SEO](https://rankmath.com/kb/configure-sitemaps/) và [Yoast SEO](https://yoast.com/help/xml-sitemaps-in-the-wordpress-seo-plugin/).
+* Ubuntu/CentOS/*nix hoặc Windows/MacOS
+* Website có sitemap.xml. Ví dụ: https://datuan.dev/sitemap.xml. Đã kiểm tra và hoạt động tốt nhất với các plugin [RankMath SEO](https://rankmath.com/kb/configure-sitemaps/) và [Yoast SEO](https://yoast.com/help/xml-sitemaps-in-the-wordpress-seo-plugin/).
 
 ## Cách sử dụng
 Cài đặt NodeJS, truy cập SSH vào máy chủ có hỗ trợ và chạy lệnh bên dưới:
 
 ```
-npm install -g sitemap-warmer
+npm install -g datuan-sitemap-warmer
 ```
 
 Sau đó chạy lệnh này để kiểm tra. Có thể thay tên miền `datuan.dev` thành tên miền của bạn để có thể kiểm tra chính xác nhất.
 
 ```
-datuan-warmup https://datuan.dev
+warmup https://datuan.dev
 ```
 
 Để warmup tự động mỗi phút, hãy cấu hình cron của máy chủ với dòng lệnh như bên dưới:
 
 ```
-* * * * * datuan-warmup https://datuan.dev
+* * * * * warmup https://datuan.dev
 ```
 
 Có thể dùng cho nhiều tên miền với nhiều khoảng thời gian khác nhau:
