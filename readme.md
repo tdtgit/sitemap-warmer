@@ -12,7 +12,7 @@ Tiện ích giúp bạn làm ấm (warmup) cache một cách đơn giản và ti
 Cài đặt NodeJS, truy cập SSH vào máy chủ có hỗ trợ và chạy lệnh bên dưới:
 
 ```
-npm install -g datuan-sitemap-warmer
+npm install -g sitemap-warmer
 ```
 
 Sau đó chạy lệnh này để kiểm tra. Có thể thay tên miền `datuan.dev` thành tên miền của bạn để có thể kiểm tra chính xác nhất.
