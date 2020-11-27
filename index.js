@@ -1,15 +1,24 @@
+#!/usr/bin/env node
+const url = require('url');
 const SitemapXMLParser = require('sitemap-xml-parser');
-const sitemapXMLParser = new SitemapXMLParser(process.argv[2], {delay: 3000});
 const Sitemap = require('./sitemap');
 const Warmer = require('./warmer');
 
 const settings = {
-    newer_than: 604800 * 2,
-    delay: 100,
-    disable_warmup_images: false,
+    sitemap: process.argv[2],          // Domain of site need to warmup
+    newer_than: 300,                   // Warm up all pages newer than 5 minutes
+    delay: 500,                        // Delay between warm up, if you're
+                                       // using hosting, please increase this
+                                       // value to 1000 or 2000.
+    disable_warmup_images: false,      // If you don't need to warm up images
 }
 
-console.log(`📬 Getting sitemap from ${process.argv[2]}`)
+if (url.parse(settings.sitemap).path === '/') {
+    settings.sitemap = `${settings.sitemap}/sitemap.xml`;
+}
+
+const sitemapXMLParser = new SitemapXMLParser(settings.sitemap, {delay: 3000});
+console.log(`📬 Getting sitemap from ${settings.sitemap}`)
 sitemapXMLParser.fetch().then(urls => {
     let sitemap = new Sitemap();
     urls.forEach(url => {
