@@ -1,9 +1,9 @@
 const fetch = require("node-fetch");
 
 class Warmer {
-    constructor(urls) {
-        this.site_delay = 200;
-        this.image_delay = 100;
+    constructor(urls, options) {
+        this.site_delay = options.delay;
+        this.image_delay = options.delay;
 
         this.accept_encoding = [];
         this.accept_encoding.br = 'gzip, deflate, br';
@@ -13,7 +13,7 @@ class Warmer {
         this.accept = [];
         this.accept.avif = 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8';
         this.accept.webp = 'image/webp,image/apng,image/*,*/*;q=0.8';
-        this.accept.normal = 'image/apng,image/*,*/*;q=0.8';
+        this.accept.default = 'image/apng,image/*,*/*;q=0.8';
 
         this.url = urls;
     }
@@ -51,13 +51,14 @@ class Warmer {
     }
 
     async fetch(url, accept, accept_encoding) {
-        console.log(`      ⚡️ Warming accept: ${accept}; accept-encoding: ${accept_encoding} for ${url}`);
+        console.log(`      ⚡️ Warming for ${url}`, accept, accept_encoding);
         return await fetch(url, {
             "headers": {
                 "accept": accept,
                 "accept-encoding": accept_encoding,
                 "cache-control": "no-cache",
                 "pragma": "no-cache",
+                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/TDT-sitemap-warmer)'
             },
             "body": null,
             "method": "GET",
