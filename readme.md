@@ -3,11 +3,14 @@
 
 Tiện ích giúp bạn làm ấm (warmup) cache một cách đơn giản và tiện dụng. Việc này khá quan trọng để đảm bảo tốc độ tốt nhất thay vì để người dùng
  đầu tiên tự làm ấm. Tiện ích này tự động làm ấm tất cả các phiên bản HTML bao gồm `brotli`, `gzip` và hình ảnh bao gồm Avif, WebP.
+ 
+Mặc định, tiện ích sẽ tự động kiểm tra những URL mới hơn 5 phút (300s) để tiến hành làm ầm. Nếu bạn muốn kiểm tra tiện ích có hoạt động hay không
+, hãy thử update một vài bài viết.
 
 ## Yêu cầu
 * NodeJS 10/12/14
 * Ubuntu/CentOS/*nix hoặc Windows/MacOS
-* Website có sitemap.xml. Ví dụ: https://datuan.dev/sitemap.xml. Đã kiểm tra và hoạt động tốt nhất với các plugin [RankMath SEO](https://rankmath.com/kb/configure-sitemaps/) và [Yoast SEO](https://yoast.com/help/xml-sitemaps-in-the-wordpress-seo-plugin/).
+* Website có sitemap.xml. Ví dụ: https://datuan.dev/sitemap.xml. Đã kiểm tra và hoạt động tốt nhất với các plugin WordPress như [RankMath SEO](https://rankmath.com/kb/configure-sitemaps/) và [Yoast SEO](https://yoast.com/help/xml-sitemaps-in-the-wordpress-seo-plugin/).
 
 ## Cách sử dụng
 Cài đặt NodeJS, truy cập SSH vào máy chủ có hỗ trợ và chạy lệnh bên dưới:
@@ -28,10 +31,14 @@ warmup https://datuan.dev
 * * * * * warmup https://datuan.dev
 ```
 
-Có thể dùng cho nhiều tên miền với nhiều khoảng thời gian khác nhau:
+Có thể dùng cho nhiều tên miền với nhiều khoảng thời gian khác nhau. Lưu ý thời gian mỗi lần chạy cron nên nhỏ hơn 5 phút.
 
 ```
-* * * * * datuan-warmup https://domain1.com
-*/5 * * * * datuan-warmup https://domain2.net
-*/15 * * * * datuan-warmup https://domain3.xyz
+* * * * * warmup https://domain1.com
+*/2 * * * * warmup https://domain2.net
+*/5 * * * * warmup https://domain3.xyz
 ```
+
+## Cấu hình thêm
+
+Đang phát triển...
