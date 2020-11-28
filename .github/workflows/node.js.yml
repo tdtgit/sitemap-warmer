@@ -28,5 +28,4 @@ jobs:
     - run: node index.js https://datuan.dev/sitemap.xml
     - run: node index.js https://datuan.dev/sitemap.xml --quite
     - run: node index.js https://datuan.dev/sitemap.xml --range 604800
-    - run: node index.js https://datuan.dev/sitemap.xml --all
-    - run: node index.js https://datuan.dev/sitemap.xml --delay 50
+    - run: node index.js https://datuan.dev/sitemap.xml --all --delay 50
