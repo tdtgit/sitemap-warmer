@@ -58,6 +58,9 @@ logger.info(`📬 Getting sitemap from ${settings.sitemap}`)
 sitemapXMLParser.fetch().then(urls => {
     let sitemap = new Sitemap();
     urls.forEach(url => {
+        if (url['lastmod'] === null || url['lastmod'] === undefined) {
+            url['lastmod'] = '2099-12-31T00:00:00'
+        }
         sitemap.addURL(url['loc'][0], sitemap.toTimestamp(url['lastmod']))
 
         if (settings.warmup_images === false) {
