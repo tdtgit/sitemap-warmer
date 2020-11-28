@@ -60,7 +60,7 @@ class Warmer {
                 "accept-encoding": accept_encoding,
                 "cache-control": "no-cache",
                 "pragma": "no-cache",
-                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/TDT-sitemap-warmer)'
+                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
             },
             "body": null,
             "method": "GET",
