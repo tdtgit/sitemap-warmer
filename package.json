@@ -3,8 +3,10 @@
   "version": "1.0.5",
   "main": "./index.js",
   "dependencies": {
+    "logplease": "^1.2.15",
     "node-fetch": "^2.6.1",
-    "sitemap-xml-parser": "0.0.2"
+    "sitemap-xml-parser": "0.0.2",
+    "yargs": "^16.1.1"
   },
   "bin": {
     "warmup": "./index.js"

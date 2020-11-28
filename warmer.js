@@ -1,4 +1,6 @@
-const fetch = require("node-fetch");
+const fetch = require('node-fetch');
+const Logger = require('logplease');
+const logger = Logger.create('warmer');
 
 class Warmer {
     constructor(urls, options) {
@@ -28,7 +30,7 @@ class Warmer {
     }
 
     async warmup_site(url) {
-        console.log(`\n🚀 Warming ${url}`);
+        logger.debug(`\n🚀 Warming ${url}`);
         for (const accept_encoding of Object.keys(this.accept_encoding)) {
             await this.fetch(url, '', this.accept_encoding[accept_encoding]);
             await this.sleep(this.site_delay)
@@ -36,7 +38,7 @@ class Warmer {
     }
 
     async warmup_image(image_url) {
-        console.log(`    🚀📷 Warming ${image_url}`);
+        logger.debug(`    🚀📷 Warming ${image_url}`);
         for (const accept of Object.keys(this.accept)) {
             await this.fetch(image_url, this.accept[accept], '')
             await this.sleep(this.image_delay)
@@ -44,14 +46,14 @@ class Warmer {
     }
 
     async warmup_images(images) {
-        console.log(`  💁 This page have ${images.length} 📷 images`);
+        logger.debug(`  💁 This page have ${images.length} 📷 images`);
         for (const image of images) {
             await this.warmup_image(image)
         }
     }
 
     async fetch(url, accept, accept_encoding) {
-        console.log(`      ⚡️ Warming for ${url}`, accept, accept_encoding);
+        logger.debug(`      ⚡️ Warming ${url}`, accept, accept_encoding);
         return await fetch(url, {
             "headers": {
                 "accept": accept,

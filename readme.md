@@ -26,16 +26,23 @@ Install NodeJS and install the utility by command below:
 npm install -g datuan-sitemap-warmer
 ```
 
-Then you can  try to scan and warm up some sites using command below. Replace `datuan.dev` to your site's domain. 
+Then you can try to scan and warm up some sites using command below. Replace `datuan.dev` to your site's domain. 
 
 ```
 warmup https://datuan.dev
 ```
 
-For the best practice, you should setup a cronjob to run your command automatically. The recommendation interval is every minute.
+You should setup a cronjob to run your command automatically. The recommendation interval is every minute.
 
 ```
 * * * * * warmup https://datuan.dev
+```
+
+For best practice, add another cronjob to warm up all URLs in sitemap in case any URL not warm up. See more at [Options](#section) section.
+
+```
+* * * * * warmup https://datuan.dev
+0 */12 * * * warmup https://datuan.dev -a
 ```
 
 You can also warm up multiple domains of course.
@@ -48,7 +55,19 @@ You can also warm up multiple domains of course.
 
 ## Options
 
-Coming soon...
+Usage:
+
+```
+warmup https://datuan.dev ...
+```
+
+| Parameter        | Description                                                                                                     | Default         |
+|------------------|-----------------------------------------------------------------------------------------------------------------|-----------------|
+| `-a`, `--all`    | Warm up all URLs in sitemap                                                                                     | False           |
+| `-r`, `--range`  | Only warm up URLs with `lastMod` newer than X seconds. This parameters is ignored if `-a` (`--all`) is provided | 300 (5 minutes) |
+| `-d`, `--delay`  | Delay (in miliseconds) between each warm up call. If you using the low-end hosting, keep this value higher      | 500             |
+| `-i`, `--images` | Enable images warm up                                                                                           | True            |
+| `-q`, `--quite`  | Suppress the debug log                                                                                          | False           |
 
 # Tài liệu tiếng Việt
 
@@ -92,4 +111,16 @@ Có thể dùng cho nhiều tên miền với nhiều khoảng thời gian khác
 
 ## Cấu hình thêm
 
-Đang phát triển...
+Usage:
+
+```
+warmup https://datuan.dev ...
+```
+
+| Parameter        | Description                                                                                                     | Default         |
+|------------------|-----------------------------------------------------------------------------------------------------------------|-----------------|
+| `-a`, `--all`    | Warm up all URLs in sitemap                                                                                     | False           |
+| `-r`, `--range`  | Only warm up URLs with `lastMod` newer than X seconds. This parameters is ignored if `-a` (`--all`) is provided | 300 (5 minutes) |
+| `-d`, `--delay`  | Delay (in miliseconds) between each warm up call. If you using the low-end hosting, keep this value higher      | 500             |
+| `-i`, `--images` | Enable images warm up                                                                                           | True            |
+| `-q`, `--quite`  | Suppress the debug log                                                                                          | False           |
