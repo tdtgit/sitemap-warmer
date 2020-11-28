@@ -31,13 +31,6 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
 const Logger = require('logplease');
 const logger = Logger.create('main');
 
-if (argv.all && argv.range) {
-    logger.warn("Warning: You should not using both `--all` and `--range`" +
-        " because" +
-        " `--range` will be ignored cause `--all` always have higher" +
-        " priority.");
-}
-
 if (argv.quite) {
     Logger.setLogLevel(Logger.LogLevels.INFO)
 }
