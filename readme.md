@@ -157,7 +157,7 @@ You should setup a cronjob to run your command automatically. The recommendation
 * * * * * warmup https://datuan.dev
 ```
 
-For best practice, add another cronjob to warm up all URLs in sitemap in case any URL not warm up. See more at [Options](#section) section.
+For best practice, add another cronjob to warm up all URLs in sitemap in case any URL not warm up. See more at [Options](#Options) section.
 
 ```
 * * * * * warmup https://datuan.dev
@@ -177,7 +177,7 @@ You can also warm up multiple domains of course.
 Usage:
 
 ```
-warmup https://datuan.dev [...]
+warmup https://datuan.dev <parameter>
 ```
 
 | Parameter        	| Description                                                                                                         	| Default         	|
@@ -233,7 +233,7 @@ Có thể dùng cho nhiều tên miền với nhiều khoảng thời gian khác
 Cách sử dụng:
 
 ```
-warmup https://datuan.dev [...]
+warmup https://datuan.dev <parameter>
 ```
 
 | Tham số          | Miêu tả                                                                                                         | Giá trị mặc định|
