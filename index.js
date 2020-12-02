@@ -3,58 +3,58 @@ const url = require('url');
 const SitemapXMLParser = require('sitemap-xml-parser');
 const Sitemap = require('./sitemap');
 const Warmer = require('./warmer');
+const utils = require('./utilities');
 const argv = require('yargs/yargs')(process.argv.slice(2))
-    .usage('Usage: $0' + ' https://domain.com')
+    .usage('Usage: $0' + ' domain.com')
     .alias('h', 'help')
-
     .alias('r', 'range')
     .describe('range', 'Only warm up URLs with lastModified newer than this value (in seconds). Default: 300s (5' +
         ' minutes)')
     .default('range', 300)
-
     .alias('d', 'delay')
     .describe('delay', 'Delay (in miliseconds) between each warm up call. If you using the low-end hosting, keep this' +
         ' value higher. Default: 500ms')
     .default('delay', 500)
-
     .alias('i', 'images')
     .describe('images', 'Enable images warm up. Default: true')
     .default('images', true)
-
     .alias('a', 'all')
     .describe('all', 'Ignore --range parameter and warm up all URLs in sitemap')
-
     .alias('q', 'quite')
     .describe('quite', 'Disable debug logging if you feel it\'s too much')
-
     .argv;
+
 const Logger = require('logplease');
 const logger = Logger.create('main');
-
 if (argv.quite) {
     Logger.setLogLevel(Logger.LogLevels.INFO)
 }
 
 const settings = {
-    // Warm up all
     all: argv.all,
-    // Domain of site need to warmup
     sitemap: process.argv[2],
-    // Warm up all pages newer than 5 minutes
     newer_than: argv.range,
-    // Delay between warm up, if you're using hosting, please increase this
-    // value to 1000 or 2000.
     delay: argv.delay,
-    // In case you don't need to warm up images
     warmup_images: argv.images,
 }
 
-if (url.parse(settings.sitemap).path === '/') {
-    settings.sitemap = `${settings.sitemap}/sitemap.xml`;
+if(url.parse(settings.sitemap).protocol === null){
+    settings.sitemap = new URL(`http://${settings.sitemap}`);
 }
 
-const sitemapXMLParser = new SitemapXMLParser(settings.sitemap, {delay: 3000});
-logger.info(`📬 Getting sitemap from ${settings.sitemap}`)
+if(utils.validURL(settings.sitemap)){
+    settings.sitemap = new URL(settings.sitemap);
+}else {
+    logger.error("Please specific an valid URL!");
+    return;
+}
+
+if (settings.sitemap.pathname === '/') {
+    settings.sitemap.pathname = '/sitemap.xml';
+}
+
+const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, {delay: 3000});
+logger.info(`📬 Getting sitemap from ${settings.sitemap.href}`)
 sitemapXMLParser.fetch().then(urls => {
     let sitemap = new Sitemap();
     urls.forEach(url => {
@@ -90,7 +90,7 @@ sitemapXMLParser.fetch().then(urls => {
         });
     }
     else {
-        logger.info('📫 No URLs need to warm up. You might want to change your --range or using --all.')
+        logger.info('📫 No URLs need to warm up. You might want to using parameter --range or --all. Using command `warmup -h` for more information.')
     }
 }).catch(() => {
     logger.error('❌  Failed! Please make sure the sitemap URL is correct.')
