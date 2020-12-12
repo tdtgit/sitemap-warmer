@@ -3,7 +3,7 @@
 A CLI script built to help you warm up the website cache by scanning through the `sitemap.xml`. This utility help to warm up website in major encoding
  like `brotli`, `gzip`, warm up images by various encoding like AVIF, WebP.
 
-![Plugin screenshot](https://datuan.dev/wp-content/uploads/2020/11/datuan-sitemap-warmer.jpg)
+![Plugin screenshot](https://datuan.dev/wp-content/uploads/2020/12/datuan-sitemap-warmer.png)
 
 -----------------------------------------
 Tài liệu Tiếng Việt tại đây - Vietnamese documentation here: https://datuan.dev/backlog/datuan-sitemap-warmer/
