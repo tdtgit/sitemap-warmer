@@ -30,7 +30,7 @@ class Warmer {
     }
 
     async warmup_site(url) {
-        logger.debug(`\n🚀 Warming ${url}`);
+        logger.debug(`🚀 Warming ${url}`);
         for (const accept_encoding of Object.keys(this.accept_encoding)) {
             await this.fetch(url, '', this.accept_encoding[accept_encoding]);
             await this.sleep(this.site_delay)
