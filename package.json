@@ -1,6 +1,6 @@
 {
   "name": "datuan-sitemap-warmer",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "./index.js",
   "dependencies": {
     "logplease": "^1.2.15",
