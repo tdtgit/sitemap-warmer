@@ -4,6 +4,7 @@ const SitemapXMLParser = require('sitemap-xml-parser');
 const Sitemap = require('./sitemap');
 const Warmer = require('./warmer');
 const utils = require('./utilities');
+const fetch = require('node-fetch');
 const argv = require('yargs/yargs')(process.argv.slice(2))
     .usage('Usage: $0' + ' domain.com')
     .alias('h', 'help')
@@ -12,7 +13,7 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
         ' minutes)')
     .default('range', 300)
     .alias('d', 'delay')
-    .describe('delay', 'Delay (in miliseconds) between each warm up call. If you using the low-end hosting, keep this' +
+    .describe('delay', 'Delay (in milliseconds) between each warm up call. If you using the low-end hosting, keep this' +
         ' value higher. Default: 500ms')
     .default('delay', 500)
     .alias('i', 'images')
@@ -25,7 +26,10 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .argv;
 
 const Logger = require('logplease');
-const logger = Logger.create('main');
+const logger = Logger.create('main', {
+    useLocalTime: true,
+});
+
 if (argv.quite) {
     Logger.setLogLevel(Logger.LogLevels.INFO)
 }
@@ -38,60 +42,68 @@ const settings = {
     warmup_images: argv.images,
 }
 
-if(url.parse(settings.sitemap).protocol === null){
-    settings.sitemap = new URL(`http://${settings.sitemap}`);
+if (url.parse(settings.sitemap).protocol === null) {
+    settings.sitemap = new URL(`https://${settings.sitemap}`);
 }
 
-if(utils.validURL(settings.sitemap)){
+if (utils.validURL(settings.sitemap)) {
     settings.sitemap = new URL(settings.sitemap);
-}else {
-    logger.error("Please specific an valid URL!");
-    return;
+}
+else {
+    logger.error(`Please specific an valid URL! Your URL ${settings.sitemap} seems not correct.`);
+    process.exit();
 }
 
 if (settings.sitemap.pathname === '/') {
-    settings.sitemap.pathname = '/sitemap.xml';
+    settings.sitemap = new URL('/sitemap.xml', settings.sitemap)
 }
 
-const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, {delay: 3000});
-logger.info(`📬 Getting sitemap from ${settings.sitemap.href}`)
-sitemapXMLParser.fetch().then(urls => {
-    let sitemap = new Sitemap();
-    urls.forEach(url => {
-        if (url['lastmod'] === null || url['lastmod'] === undefined) {
-            url['lastmod'] = '2099-12-31T00:00:00'
-        }
-        sitemap.addURL(url['loc'][0], sitemap.toTimestamp(url['lastmod']))
+// Pre-check for issue: https://github.com/tdtgit/sitemap-warmer/issues/4
+fetch(settings.sitemap.href).then((res) => {
+    if (res.ok === false) {
+        throw new Error(res.statusText)
+    }
+}).then(() => {
+    const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, {delay: 3000});
+    logger.info(`📬 Getting sitemap from ${settings.sitemap.href}`)
+    sitemapXMLParser.fetch().then(urls => {
+        let sitemap = new Sitemap();
+        urls.forEach(url => {
+            if (url['lastmod'] === null || url['lastmod'] === undefined) {
+                url['lastmod'] = '2099-12-31T00:00:00'
+            }
+            sitemap.addURL(url['loc'][0], sitemap.toTimestamp(url['lastmod']))
 
-        if (settings.warmup_images === false) {
-            return;
+            if (settings.warmup_images === false) {
+                return;
+            }
+
+            if (url['image:image']) {
+                url['image:image'].forEach(image => {
+                    sitemap.addImage(url['loc'][0], image['image:loc'][0])
+                });
+            }
+        });
+
+        let warmup_urls = settings.all ? sitemap.all() : sitemap.filter(settings.newer_than);
+
+        if (settings.all) {
+            logger.info('✅ Done. Prepare warming all URLs');
+        }
+        else {
+            logger.info(`✅ Done. Prepare warming URLs newer than ${settings.newer_than}s (${sitemap.toHumans(settings.newer_than)})`);
         }
 
-        if (url['image:image']) {
-            url['image:image'].forEach(image => {
-                sitemap.addImage(url['loc'][0], image['image:loc'][0])
+        if (Object.values(warmup_urls).length > 1) {
+            let warmer = new Warmer(warmup_urls, settings);
+            warmer.warmup().then(() => {
+                logger.info(`\n📫 Done! Warm up total ${Object.values(warmup_urls).length} URLs. Have fun!`)
             });
         }
-    });
-
-    let warmup_urls = settings.all ? sitemap.all() : sitemap.filter(settings.newer_than);
-
-    if (settings.all) {
-        logger.info('✅  Done. Prepare warming all URLs');
-    }
-    else {
-        logger.info(`✅  Done. Prepare warming URLs newer than ${settings.newer_than}s (${sitemap.toHumans(settings.newer_than)})`);
-    }
-
-    if (Object.values(warmup_urls).length > 1) {
-        let warmer = new Warmer(warmup_urls, settings);
-        warmer.warmup().then(() => {
-            logger.info(`\n📫 Done! Warm up total ${Object.values(warmup_urls).length} URLs. Have fun!`)
-        });
-    }
-    else {
-        logger.info('📫 No URLs need to warm up. You might want to using parameter --range or --all. Using command `warmup -h` for more information.')
-    }
-}).catch(() => {
-    logger.error('❌  Failed! Please make sure the sitemap URL is correct.')
-});
+        else {
+            logger.info('📫 No URLs need to warm up. You might want to using parameter --range or --all. Using command `warmup -h` for more information.')
+        }
+    })
+}).catch(error => {
+    logger.error(error)
+})

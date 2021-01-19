@@ -12,10 +12,11 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest]
         node-version: [10.x, 12.x, 14.x]
 
     steps:
@@ -25,7 +26,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+    - run: node index.js datuan.dev
+    - run: node index.js https://datuan.dev
     - run: node index.js https://datuan.dev/sitemap.xml
     - run: node index.js https://datuan.dev/sitemap.xml --quite
     - run: node index.js https://datuan.dev/sitemap.xml --range 604800
-    - run: node index.js https://datuan.dev/sitemap.xml --all --delay 50
+    - run: node index.js https://datuan.dev/sitemap.xml --all --delay 0
