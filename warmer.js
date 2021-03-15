@@ -6,13 +6,12 @@ const utils = require('./utilities')
 
 class Warmer {
     constructor(urls, options) {
-        this.site_delay = options.delay
-        this.image_delay = options.delay
+        this.options = options
 
         this.accept_encoding = [];
-        this.accept_encoding.br = 'gzip, deflate, br';
-        this.accept_encoding.gzip = 'gzip, deflate';
-        this.accept_encoding.deflate = 'deflate';
+        this.accept_encoding.br = 'gzip, deflate, br'
+        this.accept_encoding.gzip = 'gzip, deflate'
+        this.accept_encoding.deflate = 'deflate'
 
         this.accept = [];
         this.accept.avif = 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8'
@@ -20,7 +19,7 @@ class Warmer {
         this.accept.default = 'image/apng,image/*,*/*;q=0.8'
 
         this.url = urls
-        this.assets = new Set();
+        this.assets = new Set()
     }
 
     async warmup() {
@@ -33,7 +32,7 @@ class Warmer {
 
         for (let url of this.assets) {
             if (utils.validURL(url) === false) {
-                url = new URL(url, 'https://datuan.dev').href;
+                url = new URL(url, this.options.domain).href
             }
             await this.warmup_site(url)
         }
@@ -45,7 +44,7 @@ class Warmer {
         logger.debug(`🚀 Warming ${url}`)
         for (const accept_encoding of Object.keys(this.accept_encoding)) {
             await this.fetch(url, {accept_encoding: this.accept_encoding[accept_encoding]})
-            await this.sleep(this.site_delay)
+            await this.sleep(this.options.delay)
         }
     }
 
@@ -53,7 +52,7 @@ class Warmer {
         logger.debug(`    🚀📷 Warming ${image_url}`);
         for (const accept of Object.keys(this.accept)) {
             await this.fetch(image_url, {accept: this.accept[accept]})
-            await this.sleep(this.image_delay)
+            await this.sleep(this.options.delay)
         }
     }
 

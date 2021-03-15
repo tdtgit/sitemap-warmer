@@ -38,6 +38,7 @@ if (argv.quite) {
 const settings = {
     all: argv.all,
     sitemap: process.argv[2],
+    domain: null,
     newer_than: argv.range,
     delay: argv.delay,
     warmup_images: argv.images,
@@ -58,6 +59,8 @@ else {
 if (settings.sitemap.pathname === '/') {
     settings.sitemap = new URL('/sitemap.xml', settings.sitemap)
 }
+
+settings.domain = settings.sitemap.protocol + settings.sitemap.hostname
 
 // Pre-check for issue: https://github.com/tdtgit/sitemap-warmer/issues/4
 fetch(settings.sitemap.href).then((res) => {
