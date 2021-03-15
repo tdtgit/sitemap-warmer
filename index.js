@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-const url = require('url');
-const SitemapXMLParser = require('sitemap-xml-parser');
-const Sitemap = require('./sitemap');
-const Warmer = require('./warmer');
-const utils = require('./utilities');
-const fetch = require('node-fetch');
+const url = require('url')
+const SitemapXMLParser = require('sitemap-xml-parser')
+const Sitemap = require('./sitemap')
+const Warmer = require('./warmer')
+const utils = require('./utilities')
+const fetch = require('node-fetch')
 const argv = require('yargs/yargs')(process.argv.slice(2))
     .usage('Usage: $0' + ' domain.com')
+    .alias('v', 'version')
     .alias('h', 'help')
     .alias('r', 'range')
     .describe('range', 'Only warm up URLs with lastModified newer than this value (in seconds). Default: 300s (5' +
@@ -23,7 +24,7 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .describe('all', 'Ignore --range parameter and warm up all URLs in sitemap')
     .alias('q', 'quite')
     .describe('quite', 'Disable debug logging if you feel it\'s too much')
-    .argv;
+    .argv
 
 const Logger = require('logplease');
 const logger = Logger.create('main', {
@@ -43,15 +44,15 @@ const settings = {
 }
 
 if (url.parse(settings.sitemap).protocol === null) {
-    settings.sitemap = new URL(`https://${settings.sitemap}`);
+    settings.sitemap = new URL(`https://${settings.sitemap}`)
 }
 
 if (utils.validURL(settings.sitemap)) {
-    settings.sitemap = new URL(settings.sitemap);
+    settings.sitemap = new URL(settings.sitemap)
 }
 else {
-    logger.error(`Please specific an valid URL! Your URL ${settings.sitemap} seems not correct.`);
-    process.exit();
+    logger.error(`Please specific an valid URL! Your URL ${settings.sitemap} seems not correct.`)
+    process.exit()
 }
 
 if (settings.sitemap.pathname === '/') {
@@ -64,10 +65,10 @@ fetch(settings.sitemap.href).then((res) => {
         throw new Error(res.statusText)
     }
 }).then(() => {
-    const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, {delay: 3000});
+    const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, {delay: 3000})
     logger.info(`📬 Getting sitemap from ${settings.sitemap.href}`)
     sitemapXMLParser.fetch().then(urls => {
-        let sitemap = new Sitemap();
+        let sitemap = new Sitemap()
         urls.forEach(url => {
             if (url['lastmod'] === null || url['lastmod'] === undefined) {
                 url['lastmod'] = '2099-12-31T00:00:00'
@@ -75,30 +76,28 @@ fetch(settings.sitemap.href).then((res) => {
             sitemap.addURL(url['loc'][0], sitemap.toTimestamp(url['lastmod']))
 
             if (settings.warmup_images === false) {
-                return;
+                return
             }
 
             if (url['image:image']) {
                 url['image:image'].forEach(image => {
                     sitemap.addImage(url['loc'][0], image['image:loc'][0])
-                });
+                })
             }
-        });
+        })
 
-        let warmup_urls = settings.all ? sitemap.all() : sitemap.filter(settings.newer_than);
+        let warmup_urls = settings.all ? sitemap.all() : sitemap.filter(settings.newer_than)
 
         if (settings.all) {
-            logger.info('✅ Done. Prepare warming all URLs');
+            logger.info('✅ Done. Prepare warming all URLs')
         }
         else {
-            logger.info(`✅ Done. Prepare warming URLs newer than ${settings.newer_than}s (${sitemap.toHumans(settings.newer_than)})`);
+            logger.info(`✅ Done. Prepare warming URLs newer than ${settings.newer_than}s (${sitemap.toHumans(settings.newer_than)})`)
         }
 
         if (Object.values(warmup_urls).length > 1) {
-            let warmer = new Warmer(warmup_urls, settings);
-            warmer.warmup().then(() => {
-                logger.info(`\n📫 Done! Warm up total ${Object.values(warmup_urls).length} URLs. Have fun!`)
-            });
+            let warmer = new Warmer(warmup_urls, settings)
+            warmer.warmup().then(r => r);
         }
         else {
             logger.info('📫 No URLs need to warm up. You might want to using parameter --range or --all. Using command `warmup -h` for more information.')

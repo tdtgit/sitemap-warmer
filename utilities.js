@@ -1,14 +1,15 @@
 class Utilities {
-     validURL(string){
+    validURL(string) {
         try {
-            new URL(string);
-            return true;
-        } catch (err) {
-            return false;
+            new URL(string)
+            return true
+        }
+        catch (err) {
+            return false
         }
     }
 }
 
-const utils = new Utilities();
+const utils = new Utilities()
 
-module.exports = utils;
+module.exports = utils

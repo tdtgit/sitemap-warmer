@@ -1,25 +1,25 @@
 Object.filter = (obj, predicate) =>
     Object.keys(obj)
         .filter(key => predicate(obj[key]))
-        .reduce((res, key) => (res[key] = obj[key], res), {});
+        .reduce((res, key) => (res[key] = obj[key], res), {})
 
 class Sitemap {
     constructor() {
-        this.urls = [];
+        this.urls = []
     }
 
     addURL(url, lastMod) {
-        this.urls[url] = [];
-        this.urls[url].lastMod = lastMod;
-        this.urls[url].images = [];
+        this.urls[url] = []
+        this.urls[url].lastMod = lastMod
+        this.urls[url].images = []
     }
 
     addImage(url, image) {
-        this.urls[url].images.push(image);
+        this.urls[url].images.push(image)
     }
 
     all() {
-        return this.urls;
+        return this.urls
     }
 
     filter(seconds) {
@@ -27,8 +27,8 @@ class Sitemap {
     }
 
     toTimestamp(strDate) {
-        let datum = Date.parse(strDate);
-        return datum / 1000;
+        let datum = Date.parse(strDate)
+        return datum / 1000
     }
 
     // https://stackoverflow.com/a/34270811/8329480
@@ -54,4 +54,4 @@ class Sitemap {
     }
 }
 
-module.exports = Sitemap;
+module.exports = Sitemap
