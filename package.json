@@ -6,7 +6,8 @@
     "logplease": "^1.2.15",
     "node-fetch": "^2.6.1",
     "sitemap-xml-parser": "0.0.2",
-    "yargs": "^16.1.1"
+    "yargs": "^16.1.1",
+    "node-html-parser": "^3.1.0"
   },
   "bin": {
     "warmup": "./index.js"
@@ -29,8 +30,5 @@
   "bugs": {
     "url": "https://github.com/tdtgit/sitemap-warmer/issues"
   },
-  "homepage": "https://github.com/tdtgit/sitemap-warmer",
-  "devDependencies": {
-    "node-html-parser": "^3.1.0"
-  }
+  "homepage": "https://github.com/tdtgit/sitemap-warmer"
 }
