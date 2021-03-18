@@ -30,6 +30,8 @@ class Warmer {
             }
         }
 
+        logger.info(`📫 Warming up all site's assets, stay tuned!`)
+
         for (let url of this.assets) {
             if (utils.validURL(url) === false) {
                 url = new URL(url, this.options.domain).href
@@ -91,7 +93,7 @@ class Warmer {
         return new Promise(resolve => setTimeout(resolve, millis))
     }
 
-    async html(html) {
+    html(html) {
         const root = HTMLParser.parse(html)
         const scripts = root.querySelectorAll('script');
         scripts.forEach(elem => {
