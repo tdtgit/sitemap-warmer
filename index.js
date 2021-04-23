@@ -17,9 +17,12 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .describe('delay', 'Delay (in milliseconds) between each warm up call. If you using the low-end hosting, keep this' +
         ' value higher. Default: 500ms')
     .default('delay', 500)
-    .alias('i', 'images')
     .describe('images', 'Enable images warm up. Default: true')
     .default('images', true)
+    .describe('css', 'Enable CSS warm up. Default: true')
+    .default('css', true)
+    .describe('js', 'Enable Javascript warm up. Default: true')
+    .default('js', true)
     .alias('a', 'all')
     .describe('all', 'Ignore --range parameter and warm up all URLs in sitemap')
     .alias('q', 'quite')
@@ -42,6 +45,8 @@ const settings = {
     newer_than: argv.range,
     delay: argv.delay,
     warmup_images: argv.images,
+    warmup_css: argv.css,
+    warmup_js: argv.js,
 }
 
 if (url.parse(settings.sitemap).protocol === null) {

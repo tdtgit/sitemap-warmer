@@ -79,6 +79,10 @@ class Warmer {
             "method": "GET",
             "mode": "cors"
         }).then(data => {
+            if (this.options.warmup_css === false && this.options.warmup_js === false) {
+                throw new Error('No need to parse HTML');
+            }
+
             if (accept_encoding === 'deflate') {
                 return data.text();
             }
@@ -86,7 +90,9 @@ class Warmer {
             if (accept_encoding === 'deflate') {
                 this.html(html)
             }
-        });
+        }).catch(e => {
+            // Please be quite
+        })
     }
 
     async sleep(millis) {
@@ -95,15 +101,20 @@ class Warmer {
 
     html(html) {
         const root = HTMLParser.parse(html)
-        const scripts = root.querySelectorAll('script[src]');
-        scripts.forEach(elem => {
-            this.assets.add(elem.attributes.src)
-        })
 
-        const styles = root.querySelectorAll('link[href][rel="stylesheet"]');
-        styles.forEach(elem => {
-            this.assets.add(elem.attributes.href)
-        })
+        if (this.options.warmup_js) {
+            const scripts = root.querySelectorAll('script[src]')
+            scripts.forEach(elem => {
+                this.assets.add(elem.attributes.src)
+            })
+        }
+
+        if (this.options.warmup_css) {
+            const styles = root.querySelectorAll('link[href][rel="stylesheet"]')
+            styles.forEach(elem => {
+                this.assets.add(elem.attributes.href)
+            })
+        }
     }
 }
 
