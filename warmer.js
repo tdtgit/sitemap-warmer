@@ -95,18 +95,14 @@ class Warmer {
 
     html(html) {
         const root = HTMLParser.parse(html)
-        const scripts = root.querySelectorAll('script');
+        const scripts = root.querySelectorAll('script[src]');
         scripts.forEach(elem => {
-            if (elem.attributes.src) {
-                this.assets.add(elem.attributes.src)
-            }
+            this.assets.add(elem.attributes.src)
         })
 
-        const styles = root.querySelectorAll('link');
+        const styles = root.querySelectorAll('link[href][rel="stylesheet"]');
         styles.forEach(elem => {
-            if (elem.attributes.rel === 'stylesheet' && elem.attributes.href) {
-                this.assets.add(elem.attributes.href)
-            }
+            this.assets.add(elem.attributes.href)
         })
     }
 }
