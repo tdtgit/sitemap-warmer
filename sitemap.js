@@ -3,54 +3,64 @@ Object.filter = (obj, predicate) =>
         .filter(key => predicate(obj[key]))
         .reduce((res, key) => (res[key] = obj[key], res), {})
 
+const utils = require('./utilities')
+
 class Sitemap {
-    constructor() {
+    constructor(settings) {
+        this.settings = settings
+
         this.urls = []
+        this.images = [];
     }
 
-    addURL(url, lastMod) {
-        this.urls[url] = []
-        this.urls[url].lastMod = lastMod
-        this.urls[url].images = []
+    addURL(url) {
+        if (url['lastmod'] === null || url['lastmod'] === undefined) {
+            url['lastmod'] = '2099-12-31T00:00:00'
+        }
+
+        let urlLastMod = utils.toTimestamp(url['lastmod'])
+
+        if (this.shouldWarmup(urlLastMod) === false) {
+            return
+        }
+
+        let normalizeURL = utils.tryValidURL(url['loc'][0])
+        if (normalizeURL === false) {
+            return
+        }
+
+        this.urls[normalizeURL] = []
+        this.urls[normalizeURL].lastMod = urlLastMod
+
+        if (url['image:image']) {
+            url['image:image'].forEach(image => {
+                this.addImage(image['image:loc'][0])
+            })
+        }
     }
 
-    addImage(url, image) {
-        this.urls[url].images.push(image)
+    addImage(image) {
+        if (this.settings.warmup_images === false) {
+            return
+        }
+        if (this.images.indexOf(image) === -1) {
+            this.images.push(image);
+        }
     }
 
-    all() {
+    getURL() {
         return this.urls
     }
 
-    filter(seconds) {
-        return Object.filter(this.urls, url => Math.round(Date.now() / 1000) - url.lastMod < seconds)
+    getImages() {
+        return this.images
     }
 
-    toTimestamp(strDate) {
-        let datum = Date.parse(strDate)
-        return datum / 1000
-    }
-
-    // https://stackoverflow.com/a/34270811/8329480
-    toHumans(seconds) {
-        const levels = [
-            [Math.floor(seconds / 31536000), 'years'],
-            [Math.floor((seconds % 31536000) / 86400), 'days'],
-            [Math.floor(((seconds % 31536000) % 86400) / 3600), 'hours'],
-            [Math.floor((((seconds % 31536000) % 86400) % 3600) / 60), 'minutes'],
-            [(((seconds % 31536000) % 86400) % 3600) % 60, 'seconds'],
-        ];
-        let returnText = '';
-
-        let i = 0, max = levels.length;
-        for (; i < max; i++) {
-            if (levels[i][0] === 0) {
-                continue;
-            }
-            returnText += ' ' + levels[i][0] + ' ' + (levels[i][0] === 1 ? levels[i][1].substr(0, levels[i][1].length - 1) : levels[i][1]);
+    shouldWarmup(lastMod) {
+        if (this.settings.all === true) {
+            return true
         }
-
-        return returnText.trim();
+        return Math.round(Date.now() / 1000) - lastMod < this.settings.newer_than
     }
 }
 
