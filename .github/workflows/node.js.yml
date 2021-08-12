@@ -46,7 +46,8 @@ jobs:
       - run: node index.js https://datuan.dev --no-js
       - run: node index.js https://datuan.dev --no-images
 
-  publish:
+  publish-npm:
+    name: Publish to NPM
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -58,3 +59,24 @@ jobs:
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
+          
+  publish-ghr:
+    needs: publish-npm
+    name: Publish to Github Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set env
+        run: echo "PACKAGE_VERSION=$(grep '"version"' package.json | cut -d '"' -f 4 | head -n 1)" >> $GITHUB_ENV
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.PACKAGE_VERSION }}
+          release_name: Release ${{ env.PACKAGE_VERSION }}
+          body: ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
