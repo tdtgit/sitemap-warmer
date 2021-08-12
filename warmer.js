@@ -75,7 +75,7 @@ class Warmer {
 
     async fetch(url, {accept = '', accept_encoding = ''}) {
         logger.debug(`  ⚡️ Warming ${url}`, accept, accept_encoding)
-        return await fetch(url, {
+        const res = await fetch(url, {
             "headers": {
                 "accept": accept,
                 "accept-encoding": accept_encoding,
@@ -86,21 +86,19 @@ class Warmer {
             "body": null,
             "method": "GET",
             "mode": "cors"
-        }).then(data => {
-            if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
-                throw new Error('No need to parse HTML');
-            }
-
-            if (accept_encoding === 'deflate') {
-                return data.text();
-            }
-        }).then(html => {
-            if (accept_encoding === 'deflate') {
-                this.html(html)
-            }
-        }).catch(e => {
-            // Please be quite
         })
+
+        // No need warmup CSS/JS or compressed response
+        if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
+            return;
+        }
+        if (accept_encoding !== 'deflate') {
+            return;
+        }
+
+        // Send HTML response for parsing CSS/JS
+        const data = await res.text();
+        this.html(data)
     }
 
     async sleep(millis) {
