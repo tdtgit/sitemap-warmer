@@ -61,6 +61,7 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           
   publish-ghr:
+    if: github.ref == 'refs/heads/master'
     needs: publish-npm
     name: Publish to Github Release
     runs-on: ubuntu-latest
