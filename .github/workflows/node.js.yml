@@ -47,6 +47,7 @@ jobs:
       - run: node index.js https://datuan.dev --no-images
 
   publish-npm:
+    if: github.ref == 'refs/heads/master'
     name: Publish to NPM
     needs: test
     runs-on: ubuntu-latest
