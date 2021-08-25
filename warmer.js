@@ -9,7 +9,9 @@ class Warmer {
         this.settings = settings
 
         this.accept_encoding = [];
-        this.accept_encoding.br = 'gzip, deflate, br'
+        if (this.settings.warmup_brotli) {
+            this.accept_encoding.br = 'gzip, deflate, br'
+        }
         this.accept_encoding.gzip = 'gzip, deflate'
         this.accept_encoding.deflate = 'deflate'
 

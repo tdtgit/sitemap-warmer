@@ -23,6 +23,8 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .default('css', true)
     .describe('js', 'Enable Javascript warm up. Default: true')
     .default('js', true)
+    .describe('brotli', 'Enable Brotli compress warm up. Default: true')
+    .default('brotli', true)
     .alias('a', 'all')
     .describe('all', 'Ignore --range parameter and warm up all URLs in sitemap')
     .alias('q', 'quite')
@@ -47,6 +49,7 @@ const settings = {
     warmup_images: argv.images,
     warmup_css: argv.css,
     warmup_js: argv.js,
+    warmup_brotli: argv.brotli,
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)

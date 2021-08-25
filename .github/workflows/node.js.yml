@@ -45,6 +45,7 @@ jobs:
       - run: node index.js https://datuan.dev --no-css
       - run: node index.js https://datuan.dev --no-js
       - run: node index.js https://datuan.dev --no-images
+      - run: node index.js https://datuan.dev --no-brotli
 
   publish-npm:
     if: github.ref == 'refs/heads/master'
@@ -60,7 +61,7 @@ jobs:
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          
+
   publish-ghr:
     if: github.ref == 'refs/heads/master'
     needs: publish-npm
