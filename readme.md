@@ -79,4 +79,5 @@ warmup datuan.dev <URL> <parameter>
 | `--no-images`    | Disable images warm up                                                                                               | False                |
 | `--no-css`    | Disable CSS warm up                                                                                               | False                |
 | `--no-js`    | Disable Javascript warm up                                                                                               | False                |
+| `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
 | `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
