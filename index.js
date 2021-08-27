@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-const url = require('url');
 const SitemapXMLParser = require('sitemap-xml-parser')
 const Sitemap = require('./sitemap')
 const Warmer = require('./warmer')

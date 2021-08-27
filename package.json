@@ -5,9 +5,9 @@
   "dependencies": {
     "logplease": "^1.2.15",
     "node-fetch": "^2.6.1",
-    "normalize-url": "^6.1.0",
     "node-html-parser": "^4.1.3",
-    "sitemap-xml-parser": "0.0.2",
+    "normalize-url": "^6.1.0",
+    "sitemap-xml-parser": "git+https://github.com/tdtgit/sitemap-xml-parser.git",
     "yargs": "^16.2.0"
   },
   "bin": {

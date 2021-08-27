@@ -117,3 +117,4 @@ dist
 
 # PHPStorm
 .idea
+.DS_Store
