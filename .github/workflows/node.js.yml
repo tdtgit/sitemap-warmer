@@ -64,7 +64,7 @@ jobs:
 
   publish-ghr:
     if: github.ref == 'refs/heads/master'
-    needs: publish-npm
+    needs: test
     name: Publish to Github Release
     runs-on: ubuntu-latest
     steps:

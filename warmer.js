@@ -17,12 +17,12 @@ class Warmer {
 
         this.accept = [];
         if (this.settings.warmup_avif) {
-            this.accept.avif = 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8'
+            this.accept.avif = 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
         }
         if (this.settings.warmup_webp) {
-            this.accept.webp = 'image/webp,image/apng,image/*,*/*;q=0.8'
+            this.accept.webp = 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
         }
-        this.accept.default = 'image/apng,image/*,*/*;q=0.8'
+        this.accept.default = 'image/apng,image/svg+xml,image/*,*/*;q=0.8'
 
         this.sitemap = sitemap
         this.url = this.sitemap.getURL(settings.newer_than)
