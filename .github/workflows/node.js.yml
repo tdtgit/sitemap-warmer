@@ -37,15 +37,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - run: node index.js datuan.dev
-      - run: node index.js https://datuan.dev
-      - run: node index.js https://datuan.dev/sitemap.xml
-      - run: node index.js https://datuan.dev --quite
-      - run: node index.js https://datuan.dev --range 604800
-      - run: node index.js https://datuan.dev --no-css
-      - run: node index.js https://datuan.dev --no-js
-      - run: node index.js https://datuan.dev --no-images
-      - run: node index.js https://datuan.dev --no-brotli
+      - run: node index.js wordpress.org
+      - run: node index.js https://wordpress.org
+      - run: node index.js https://wordpress.org/sitemap.xml
+      - run: node index.js https://wordpress.org --quite
+      - run: node index.js https://wordpress.org --range 604800
+      - run: node index.js https://wordpress.org --no-css
+      - run: node index.js https://wordpress.org --no-js
+      - run: node index.js https://wordpress.org --no-images
+      - run: node index.js https://wordpress.org --no-brotli
 
   publish-npm:
     if: github.ref == 'refs/heads/master'
