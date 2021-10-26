@@ -21,8 +21,7 @@ with a higher value. See [Options](#options) section for more details.
 * NodeJS 10/12/14
 * Ubuntu/CentOS/*nix or Windows/MacOS
 * A website has a sitemap.xml endpoint. Example: https://datuan.dev/sitemap.xml. Tested and worked well with
-  plugins [RankMath SEO](https://rankmath.com/kb/configure-sitemaps/)
-  and [Yoast SEO](https://yoast.com/help/xml-sitemaps-in-the-wordpress-seo-plugin/).
+  plugins [RankMath SEO](https://rankmath.com/kb/configure-sitemaps/), [Yoast SEO](https://yoast.com/help/xml-sitemaps-in-the-wordpress-seo-plugin/), [Jetpack](https://jetpack.com/).
 
 ## How to use
 
