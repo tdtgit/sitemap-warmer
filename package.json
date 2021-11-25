@@ -11,25 +11,26 @@
     "yargs": "^16.2.0"
   },
   "bin": {
-    "warmup": "./index.js"
+    "warmup": "index.js"
   },
   "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/tdtgit/sitemap-warmer.git"
+    "url": "git+https://github.com/tdtgit/sitemap-warmer.git"
   },
   "keywords": [
     "sitemap",
     "warmer"
   ],
-  "author": {
-    "name": "Argus Duong",
-    "email": "hi@duonganhtuan.com",
-    "url": "https://datuan.dev/"
-  },
+  "author": "Argus Duong <hi@duonganhtuan.com> (https://datuan.dev/)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tdtgit/sitemap-warmer/issues"
   },
-  "homepage": "https://github.com/tdtgit/sitemap-warmer"
+  "homepage": "https://github.com/tdtgit/sitemap-warmer",
+  "description": "A CLI script built to help you warm up the website cache by scanning through the `sitemap.xml`. This utility help to warm up website in major encoding like `brotli`, `gzip`, warm up images by various encoding like AVIF, WebP.",
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js wordpress.org"
+  }
 }

@@ -9,12 +9,10 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .alias('v', 'version')
     .alias('h', 'help')
     .alias('r', 'range')
-    .describe('range', 'Only warm up URLs with lastModified newer than this value (in seconds). Default: 300s (5' +
-        ' minutes)')
+    .describe('range', 'Only warm up URLs with lastModified newer than this value (in seconds). Default: 300s (5 minutes)')
     .default('range', 300)
     .alias('d', 'delay')
-    .describe('delay', 'Delay (in milliseconds) between each warm up call. If you using the low-end hosting, keep this' +
-        ' value higher. Default: 500ms')
+    .describe('delay', 'Delay (in milliseconds) between each warm up call. If you using the low-end hosting, keep this value higher. Default: 500ms')
     .default('delay', 500)
     .describe('images', 'Enable images warm up. Default: true')
     .default('images', true)
@@ -34,10 +32,10 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .describe('quite', 'Disable debug logging if you feel it\'s too much')
     .argv
 
-const Logger = require('logplease');
+const Logger = require('logplease')
 const logger = Logger.create('main', {
     useLocalTime: true,
-});
+})
 
 if (argv.quite) {
     Logger.setLogLevel(Logger.LogLevels.INFO)
@@ -77,8 +75,9 @@ fetch(settings.sitemap.href).then((res) => {
         throw new Error(res.statusText)
     }
 }).then(() => {
-    const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, {delay: 3000})
     logger.info(`📬 Getting sitemap from ${settings.sitemap.href}`)
+
+    const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, { delay: 3000 })
     sitemapXMLParser.fetch().then(urls => {
         let sitemap = new Sitemap(settings)
         urls.forEach(url => {
