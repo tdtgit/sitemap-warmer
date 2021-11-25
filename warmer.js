@@ -8,14 +8,14 @@ class Warmer {
     constructor(sitemap, settings) {
         this.settings = settings
 
-        this.accept_encoding = [];
+        this.accept_encoding = []
         if (this.settings.warmup_brotli) {
             this.accept_encoding.br = 'gzip, deflate, br'
         }
         this.accept_encoding.gzip = 'gzip, deflate'
         this.accept_encoding.deflate = 'deflate'
 
-        this.accept = [];
+        this.accept = []
         if (this.settings.warmup_avif) {
             this.accept.avif = 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
         }
@@ -25,7 +25,7 @@ class Warmer {
         this.accept.default = 'image/apng,image/svg+xml,image/*,*/*;q=0.8'
 
         this.sitemap = sitemap
-        this.url = this.sitemap.getURL(settings.newer_than)
+        this.url = this.sitemap.getURLs()
         this.images = this.sitemap.getImages()
         this.assets = new Set()
     }
@@ -65,6 +65,10 @@ class Warmer {
 
     async warmup_site(url) {
         logger.debug(`🚀 Warming ${url}`)
+        if (this.settings.purge >= 1) {
+            await this.purge(url)
+            await this.sleep(100)
+        }
         for (const accept_encoding of Object.keys(this.accept_encoding)) {
             await this.fetch(url, {accept_encoding: this.accept_encoding[accept_encoding]})
             await this.sleep(this.settings.delay)
@@ -73,10 +77,28 @@ class Warmer {
 
     async warmup_image(image_url) {
         logger.debug(`🚀📷 Warming ${image_url}`)
+        if (this.settings.purge >= 2) {
+            await this.purge(image_url)
+            await this.sleep(100)
+        }
         for (const accept of Object.keys(this.accept)) {
             await this.fetch(image_url, {accept: this.accept[accept]})
             await this.sleep(this.settings.delay)
         }
+    }
+
+    async purge(url) {
+        logger.debug(`  ⚡️ Purging ${url}`)
+        await fetch(url, {
+            "headers": {
+                "cache-control": "no-cache",
+                "pragma": "no-cache",
+                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
+            },
+            "body": null,
+            "method": "PURGE",
+            "mode": "cors"
+        })
     }
 
     async fetch(url, {accept = '', accept_encoding = ''}) {
@@ -96,14 +118,14 @@ class Warmer {
 
         // No need warmup CSS/JS or compressed response
         if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
-            return;
+            return
         }
         if (accept_encoding !== 'deflate') {
-            return;
+            return
         }
 
         // Send HTML response for parsing CSS/JS
-        const data = await res.text();
+        const data = await res.text()
         this.html(data)
     }
 
@@ -130,4 +152,4 @@ class Warmer {
     }
 }
 
-module.exports = Warmer;
+module.exports = Warmer

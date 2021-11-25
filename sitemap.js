@@ -48,7 +48,7 @@ class Sitemap {
         }
     }
 
-    getURL() {
+    getURLs() {
         return this.urls
     }
 

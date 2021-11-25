@@ -9,12 +9,10 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .alias('v', 'version')
     .alias('h', 'help')
     .alias('r', 'range')
-    .describe('range', 'Only warm up URLs with lastModified newer than this value (in seconds). Default: 300s (5' +
-        ' minutes)')
+    .describe('range', 'Only warm up URLs with lastModified newer than this value (in seconds). Default: 300s (5 minutes)')
     .default('range', 300)
     .alias('d', 'delay')
-    .describe('delay', 'Delay (in milliseconds) between each warm up call. If you using the low-end hosting, keep this' +
-        ' value higher. Default: 500ms')
+    .describe('delay', 'Delay (in milliseconds) between each warm up call. If you using the low-end hosting, keep this value higher. Default: 500ms')
     .default('delay', 500)
     .describe('images', 'Enable images warm up. Default: true')
     .default('images', true)
@@ -32,12 +30,15 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .describe('all', 'Ignore --range parameter and warm up all URLs in sitemap')
     .alias('q', 'quite')
     .describe('quite', 'Disable debug logging if you feel it\'s too much')
+    .alias('p', 'purge')
+    .describe('purge', 'Enable purging the resources before warm up.')
+    .default('purge', 0)
     .argv
 
-const Logger = require('logplease');
+const Logger = require('logplease')
 const logger = Logger.create('main', {
     useLocalTime: true,
-});
+})
 
 if (argv.quite) {
     Logger.setLogLevel(Logger.LogLevels.INFO)
@@ -55,6 +56,7 @@ const settings = {
     warmup_brotli: argv.brotli,
     warmup_webp: argv.webp,
     warmup_avif: argv.avif,
+    purge: parseInt(argv.purge),
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)
@@ -77,8 +79,9 @@ fetch(settings.sitemap.href).then((res) => {
         throw new Error(res.statusText)
     }
 }).then(() => {
-    const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, {delay: 3000})
     logger.info(`📬 Getting sitemap from ${settings.sitemap.href}`)
+
+    const sitemapXMLParser = new SitemapXMLParser(settings.sitemap.href, { delay: 3000 })
     sitemapXMLParser.fetch().then(urls => {
         let sitemap = new Sitemap(settings)
         urls.forEach(url => {
