@@ -30,6 +30,9 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .describe('all', 'Ignore --range parameter and warm up all URLs in sitemap')
     .alias('q', 'quite')
     .describe('quite', 'Disable debug logging if you feel it\'s too much')
+    .alias('p', 'purge')
+    .describe('purge', 'Enable purging the resources before warm up.')
+    .default('purge', 0)
     .argv
 
 const Logger = require('logplease')
@@ -53,6 +56,7 @@ const settings = {
     warmup_brotli: argv.brotli,
     warmup_webp: argv.webp,
     warmup_avif: argv.avif,
+    purge: parseInt(argv.purge),
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)
