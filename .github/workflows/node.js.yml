@@ -96,7 +96,6 @@ jobs:
         run: echo "PACKAGE_VERSION=$(grep '"version"' package.json | cut -d '"' -f 4 | head -n 1)" >> $GITHUB_ENV
       - name: Build and push image
         run: |
-          docker build --tag tdtgit/sitemap-warmer:$PACKAGE_VERSION --tag tdtgit/sitemap-warmer:latest .
+          docker build -t tdtgit/sitemap-warmer:$PACKAGE_VERSION -t tdtgit/sitemap-warmer:latest .
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-          docker push tdtgit/sitemap-warmer:$PACKAGE_VERSION
-          docker push tdtgit/sitemap-warmer:latest
+          docker push tdtgit/sitemap-warmer --all-tags
