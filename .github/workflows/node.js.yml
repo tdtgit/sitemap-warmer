@@ -24,6 +24,5 @@ jobs:
         env:
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         run: |
-          docker buildx build --push --platform linux/arm/v7,linux/arm64,linux/amd64 -t tdtgit/sitemap-warmer .
           docker login -u tdtgit -p $DOCKER_PASSWORD
-          docker push tdtgit/sitemap-warmer --all-tags
+          docker buildx build --push --platform linux/arm/v7,linux/arm64,linux/amd64 -t tdtgit/sitemap-warmer .
