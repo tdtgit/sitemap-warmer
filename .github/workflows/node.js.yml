@@ -37,14 +37,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - run: node index.js wordpress.org
-      - run: node index.js https://wordpress.org
-      - run: node index.js https://wordpress.org/sitemap.xml
-      - run: node index.js https://wordpress.org --quite
-      - run: node index.js https://wordpress.org --no-css
-      - run: node index.js https://wordpress.org --no-js
-      - run: node index.js https://wordpress.org --no-images
-      - run: node index.js https://wordpress.org --no-brotli
+      - run: node index.js www.cloudflare.com
+      - run: node index.js https://www.cloudflare.com
+      - run: node index.js https://www.cloudflare.com/sitemap.xml
+      - run: node index.js https://www.cloudflare.com --quite
+      - run: node index.js https://www.cloudflare.com --no-css
+      - run: node index.js https://www.cloudflare.com --no-js
+      - run: node index.js https://www.cloudflare.com --no-images
+      - run: node index.js https://www.cloudflare.com --no-brotli
 
   publish-npm:
     if: github.ref == 'refs/heads/master'
@@ -84,6 +84,7 @@ jobs:
           prerelease: false
 
   publish-dockerhub:
+    if: github.ref == 'refs/heads/master'
     needs: test
     name: Publish to Docker Hub
     runs-on: ubuntu-latest
