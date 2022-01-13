@@ -88,7 +88,6 @@ jobs:
     name: Publish to Docker Hub
     runs-on: ubuntu-latest
     env:
-      DOCKER_USER: ${{secrets.DOCKER_USER}}
       DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     steps:
       - name: Get package version
@@ -96,5 +95,5 @@ jobs:
       - name: Build and push image
         run: |
           docker build -t tdtgit/sitemap-warmer:$PACKAGE_VERSION -t tdtgit/sitemap-warmer:latest .
-          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          docker login -u tdtgit -p $DOCKER_PASSWORD
           docker push tdtgit/sitemap-warmer --all-tags
