@@ -2,9 +2,9 @@ name: Build & Test
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ master, dev, docker ]
   pull_request:
-    branches: [ master, dev ]
+    branches: [ master, dev, docker ]
 
 jobs:
   build:
@@ -83,3 +83,17 @@ jobs:
           body: ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
+
+  publish-dockerhub:
+    needs: test
+    name: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_USER: ${{secrets.DOCKER_USER}}
+      DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+    run: |
+      export PACKAGE_VERSION=$(grep '"version"' package.json | cut -d '"' -f 4 | head -n 1)
+      docker build --tag tdtgit/sitemap-warmer:$PACKAGE_VERSION --tag tdtgit/sitemap-warmer:latest .
+      docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      docker push tdtgit/sitemap-warmer:$PACKAGE_VERSION
+      docker push tdtgit/sitemap-warmer:latest
