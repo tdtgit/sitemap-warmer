@@ -88,6 +88,7 @@ jobs:
     name: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: Build and push image
         env:
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
