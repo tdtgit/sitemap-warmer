@@ -41,7 +41,6 @@ jobs:
       - run: node index.js https://wordpress.org
       - run: node index.js https://wordpress.org/sitemap.xml
       - run: node index.js https://wordpress.org --quite
-      - run: node index.js https://wordpress.org --range 604800
       - run: node index.js https://wordpress.org --no-css
       - run: node index.js https://wordpress.org --no-js
       - run: node index.js https://wordpress.org --no-images
