@@ -85,6 +85,7 @@ jobs:
           prerelease: false
 
   publish-dockerhub:
+    needs: test
     name: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
