@@ -20,4 +20,6 @@ jobs:
         env:
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         run: |
-          docker build .
+          docker build -t tdtgit/sitemap-warmer .
+          docker login -u tdtgit -p $DOCKER_PASSWORD
+          docker push tdtgit/sitemap-warmer --all-tags
