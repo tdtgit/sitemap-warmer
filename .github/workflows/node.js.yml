@@ -87,13 +87,13 @@ jobs:
     needs: test
     name: Publish to Docker Hub
     runs-on: ubuntu-latest
-    env:
-      DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     steps:
       - name: Get package version
         run: echo "PACKAGE_VERSION=$(grep '"version"' package.json | cut -d '"' -f 4 | head -n 1)" >> $GITHUB_ENV
       - name: Build and push image
+        env:
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         run: |
-          docker build -t tdtgit/sitemap-warmer:$PACKAGE_VERSION -t tdtgit/sitemap-warmer:latest .
+          docker build -t tdtgit/sitemap-warmer:${{ env.PACKAGE_VERSION }} -t tdtgit/sitemap-warmer:latest .
           docker login -u tdtgit -p $DOCKER_PASSWORD
           docker push tdtgit/sitemap-warmer --all-tags
