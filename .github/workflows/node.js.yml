@@ -37,8 +37,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - run: node index.js www.cloudflare.com
-      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quite
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-css
