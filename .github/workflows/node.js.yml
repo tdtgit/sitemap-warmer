@@ -28,6 +28,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: docker build -t sitemap-warmer:local .
+      - run: docker save sitemap-warmer:local > sitemap-warmer.tar
+      - name: Upload local Docker image
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-image
+          path: sitemap-warmer.tar
 
   test-npm:
     needs: build-npm
@@ -56,6 +62,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download local Docker image
+        uses: actions/download-artifact@v2
+        with:
+          name: docker-image
+      - run: docker load -i sitemap-warmer.tar
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quite
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-css
