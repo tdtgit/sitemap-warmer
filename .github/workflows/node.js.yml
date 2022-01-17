@@ -48,6 +48,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       - run: docker build -t sitemap-warmer:local .
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quite
