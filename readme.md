@@ -16,8 +16,16 @@ of `<lastmod>` tag in sitemap.xml files and any images inside URLs through `<ima
 plugin, try to update some posts or pages or using parameter `--range`
 with a higher value. See [Options](#options) section for more details.
 
-## Requirements
+## Quick start with Docker
 
+```
+docker run tdtgit/sitemap-warmer yourdomain.com
+```
+
+For more options and parameters, please refer to [Options](#options) section.
+
+## Requirements
+(In case you don't have Docker installation)
 * NodeJS 10/12/14
 * Ubuntu/CentOS/*nix or Windows/MacOS
 * A website has a sitemap.xml endpoint. Example: https://datuan.dev/sitemap.xml. Tested and worked well with

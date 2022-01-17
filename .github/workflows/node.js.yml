@@ -2,9 +2,9 @@ name: Build & Test
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ master, dev, docker ]
   pull_request:
-    branches: [ master, dev ]
+    branches: [ master, dev, docker ]
 
 jobs:
   build:
@@ -37,15 +37,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - run: node index.js wordpress.org
-      - run: node index.js https://wordpress.org
-      - run: node index.js https://wordpress.org/sitemap.xml
-      - run: node index.js https://wordpress.org --quite
-      - run: node index.js https://wordpress.org --range 604800
-      - run: node index.js https://wordpress.org --no-css
-      - run: node index.js https://wordpress.org --no-js
-      - run: node index.js https://wordpress.org --no-images
-      - run: node index.js https://wordpress.org --no-brotli
+      - run: node index.js www.cloudflare.com
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quite
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-css
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-js
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-images
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-brotli
 
   publish-npm:
     if: github.ref == 'refs/heads/master'
@@ -83,3 +82,24 @@ jobs:
           body: ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
+
+  publish-dockerhub:
+    if: github.ref == 'refs/heads/master'
+    needs: test
+    name: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Build and push image
+        env:
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          export PACKAGE_VERSION=$(grep '"version"' package.json | cut -d '"' -f 4 | head -n 1)
+          docker login -u tdtgit -p $DOCKER_PASSWORD
+          docker buildx build --push --platform linux/arm/v7,linux/arm64,linux/amd64 -t tdtgit/sitemap-warmer -t tdtgit/sitemap-warmer:$PACKAGE_VERSION .
