@@ -2,9 +2,9 @@ name: Build & Test
 
 on:
   push:
-    branches: [ master, dev, docker ]
+    branches: [ master, dev, docker-tests ]
   pull_request:
-    branches: [ master, dev, docker ]
+    branches: [ master, dev, docker-tests ]
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
 
-  test:
+  test-npm:
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -44,10 +44,22 @@ jobs:
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-images
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-brotli
 
+  test-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: docker build -t sitemap-warmer:local .
+      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
+      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quite
+      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-css
+      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-js
+      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-images
+      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-brotli
+
   publish-npm:
     if: github.ref == 'refs/heads/master'
     name: Publish to NPM
-    needs: test
+    needs: test-npm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -61,7 +73,7 @@ jobs:
 
   publish-ghr:
     if: github.ref == 'refs/heads/master'
-    needs: test
+    needs: test-npm
     name: Publish to Github Release
     runs-on: ubuntu-latest
     steps:
@@ -83,7 +95,7 @@ jobs:
 
   publish-dockerhub:
     if: github.ref == 'refs/heads/master'
-    needs: test
+    needs: test-docker
     name: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
