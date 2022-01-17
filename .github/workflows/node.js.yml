@@ -60,7 +60,7 @@ jobs:
   publish-npm:
     if: github.ref == 'refs/heads/master'
     name: Publish to NPM
-    needs: test-npm
+    needs: [test-npm, test-docker]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -74,8 +74,8 @@ jobs:
 
   publish-ghr:
     if: github.ref == 'refs/heads/master'
-    needs: test-npm
-    name: Publish to Github Release
+    needs: [test-npm, test-docker]
+    name: Publish to GitHub Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -96,7 +96,7 @@ jobs:
 
   publish-dockerhub:
     if: github.ref == 'refs/heads/master'
-    needs: test-docker
+    needs: [test-npm, test-docker]
     name: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
