@@ -34,6 +34,7 @@ jobs:
         with:
           name: docker-image
           path: sitemap-warmer.tar
+          retention-days: 1
 
   test-npm:
     needs: build-npm
