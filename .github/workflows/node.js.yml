@@ -38,13 +38,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: node index.js www.cloudflare.com
-      - run: node index.js https://www.cloudflare.com
-      - run: node index.js https://www.cloudflare.com/sitemap.xml
-      - run: node index.js https://www.cloudflare.com --quite
-      - run: node index.js https://www.cloudflare.com --no-css
-      - run: node index.js https://www.cloudflare.com --no-js
-      - run: node index.js https://www.cloudflare.com --no-images
-      - run: node index.js https://www.cloudflare.com --no-brotli
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quite
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-css
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-js
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-images
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-brotli
 
   publish-npm:
     if: github.ref == 'refs/heads/master'
