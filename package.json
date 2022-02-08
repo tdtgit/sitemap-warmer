@@ -7,7 +7,7 @@
     "logplease": "^1.2.15",
     "node-fetch": "^2.6.1",
     "node-html-parser": "^5.1.0",
-    "normalize-url": "^6.1.0",
+    "normalize-url": "^7.0.3",
     "yargs": "^16.2.0"
   },
   "bin": {
