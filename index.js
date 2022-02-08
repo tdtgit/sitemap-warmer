@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const SitemapXMLParser = require('sitemap-xml-parser')
+const SitemapXMLParser = require('datuan-sitemap-parser')
 const Sitemap = require('./sitemap')
 const Warmer = require('./warmer')
 const utils = require('./utilities')
