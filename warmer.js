@@ -126,7 +126,7 @@ class Warmer {
         if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
             return
         }
-        if (accept_encoding !== 'deflate') {
+        if (headers.accept_encoding !== 'deflate') {
             return
         }
 
