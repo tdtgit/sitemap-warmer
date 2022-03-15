@@ -1,10 +1,11 @@
-const fetch = require('node-fetch')
-const Logger = require('logplease')
-const logger = Logger.create('warmer')
-const HTMLParser = require('node-html-parser')
-const utils = require('./utilities')
+import fetch from 'node-fetch'
+import Logger  from 'logplease'
+import HTMLParser from 'node-html-parser'
+import utils from './utilities.js'
 
-class Warmer {
+const logger = Logger.create('warmer')
+
+export default class Warmer {
     constructor(sitemap, settings) {
         this.settings = settings
 
@@ -157,5 +158,3 @@ class Warmer {
         }
     }
 }
-
-module.exports = Warmer
