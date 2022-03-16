@@ -23,6 +23,9 @@
     "warmer"
   ],
   "author": "Argus Duong <hi@duonganhtuan.com> (https://datuan.dev/)",
+  "contributors": [
+    "Robert Michalski (https://github.com/robman87)"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tdtgit/sitemap-warmer/issues"
