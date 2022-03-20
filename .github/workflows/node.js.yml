@@ -57,6 +57,7 @@ jobs:
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-js
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-images
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-brotli
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --headers.user-agent "My GitHub Actions tests"
 
   test-docker:
     needs: build-docker
@@ -74,6 +75,7 @@ jobs:
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-js
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-images
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-brotli
+      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --headers.user-agent "My GitHub Actions tests"
 
   publish-npm:
     if: github.ref == 'refs/heads/master'
