@@ -1,11 +1,14 @@
 Object.filter = (obj, predicate) =>
     Object.keys(obj)
         .filter(key => predicate(obj[key]))
-        .reduce((res, key) => (res[key] = obj[key], res), {})
+        .reduce((res, key) => {
+            res[key] = obj[key]
+            return res
+        }, {})
 
-const utils = require('./utilities')
+import utils from './utilities.js'
 
-class Sitemap {
+export default class Sitemap {
     constructor(settings) {
         this.settings = settings
 
@@ -63,5 +66,3 @@ class Sitemap {
         return Math.round(Date.now() / 1000) - lastMod < this.settings.newer_than
     }
 }
-
-module.exports = Sitemap
