@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "robman87",
+      "name": "Robert Michalski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5516214?v=4",
+      "profile": "https://github.com/robman87",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "sitemap-warmer",
+  "projectOwner": "tdtgit",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
