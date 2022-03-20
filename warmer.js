@@ -1,12 +1,18 @@
-const fetch = require('node-fetch')
-const Logger = require('logplease')
-const logger = Logger.create('warmer')
-const HTMLParser = require('node-html-parser')
-const utils = require('./utilities')
+import fetch from 'node-fetch'
+import Logger  from 'logplease'
+import HTMLParser from 'node-html-parser'
+import utils from './utilities.js'
 
-class Warmer {
+const logger = Logger.create('warmer')
+
+export default class Warmer {
     constructor(sitemap, settings) {
         this.settings = settings
+
+        this.custom_headers = {}
+        if (this.settings.custom_headers) {
+            Object.assign(this.custom_headers, this.settings.custom_headers)
+        }
 
         this.accept_encoding = []
         if (this.settings.warmup_brotli) {
@@ -70,7 +76,7 @@ class Warmer {
             await this.sleep(100)
         }
         for (const accept_encoding of Object.keys(this.accept_encoding)) {
-            await this.fetch(url, {accept_encoding: this.accept_encoding[accept_encoding]})
+            await this.fetch(url, Object.assign({}, this.custom_headers, {accept_encoding: this.accept_encoding[accept_encoding]}))
             await this.sleep(this.settings.delay)
         }
     }
@@ -82,7 +88,7 @@ class Warmer {
             await this.sleep(100)
         }
         for (const accept of Object.keys(this.accept)) {
-            await this.fetch(image_url, {accept: this.accept[accept]})
+            await this.fetch(image_url, Object.assign({}, this.custom_headers, {accept: this.accept[accept]}))
             await this.sleep(this.settings.delay)
         }
     }
@@ -90,27 +96,31 @@ class Warmer {
     async purge(url) {
         logger.debug(`  ⚡️ Purging ${url}`)
         await fetch(url, {
-            "headers": {
-                "cache-control": "no-cache",
-                "pragma": "no-cache",
-                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
-            },
+            "headers": Object.assign(
+                {
+                    "cache-control": "no-cache",
+                    "pragma": "no-cache",
+                    "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
+                },
+                headers
+            ),
             "body": null,
             "method": "PURGE",
             "mode": "cors"
         })
     }
 
-    async fetch(url, {accept = '', accept_encoding = ''}) {
-        logger.debug(`  ⚡️ Warming ${url}`, accept, accept_encoding)
+    async fetch(url, headers = { accept: '', accept_encoding: '' }) {
+        logger.debug(`  ⚡️ Warming ${url}`, headers)
         const res = await fetch(url, {
-            "headers": {
-                "accept": accept,
-                "accept-encoding": accept_encoding,
-                "cache-control": "no-cache",
-                "pragma": "no-cache",
-                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
-            },
+            "headers": Object.assign(
+                {
+                    "cache-control": "no-cache",
+                    "pragma": "no-cache",
+                    "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
+                },
+                headers
+            ),
             "body": null,
             "method": "GET",
             "mode": "cors"
@@ -120,7 +130,7 @@ class Warmer {
         if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
             return
         }
-        if (accept_encoding !== 'deflate') {
+        if (headers.accept_encoding !== 'deflate') {
             return
         }
 
@@ -151,5 +161,3 @@ class Warmer {
         }
     }
 }
-
-module.exports = Warmer

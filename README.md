@@ -88,3 +88,12 @@ warmup datuan.dev <URL> <parameter>
 | `--no-js`    | Disable Javascript warm up                                                                                               | False                |
 | `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
 | `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
+| `-h`, `--headers`    | Add custom headers                                                                                                | None            |
+
+## Advanced options
+### Custom request headers
+
+```
+warmup datuan.dev --headers.auth "Bearer super_secret" --headers.user-agent "My own crawler"
+```
+...

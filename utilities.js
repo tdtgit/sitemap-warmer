@@ -1,5 +1,5 @@
-const normalize_url = require('normalize-url')
-const url = require('url')
+import normalize_url from 'normalize-url'
+import url from 'node:url'
 
 class Utilities {
     isValidURL(string) {
@@ -66,4 +66,6 @@ class Utilities {
     }
 }
 
-module.exports = new Utilities
+const utils = new Utilities()
+
+export default utils

@@ -1,10 +1,12 @@
 #!/usr/bin/env node
-const SitemapXMLParser = require('datuan-sitemap-parser')
-const Sitemap = require('./sitemap')
-const Warmer = require('./warmer')
-const utils = require('./utilities')
-const fetch = require('node-fetch')
-const argv = require('yargs/yargs')(process.argv.slice(2))
+import SitemapXMLParser from 'datuan-sitemap-parser'
+import Sitemap from './sitemap.js'
+import Warmer from './warmer.js'
+import utils from './utilities.js'
+import fetch from 'node-fetch'
+import Logger from 'logplease'
+import yargs from 'yargs'
+const argv = yargs(process.argv.slice(2))
     .usage('Usage: $0' + ' domain.com')
     .alias('v', 'version')
     .alias('h', 'help')
@@ -33,9 +35,10 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .alias('p', 'purge')
     .describe('purge', 'Enable purging the resources before warm up.')
     .default('purge', 0)
+    .describe('headers', 'Add custom headers with warmup request. Example --headers.auth \'Bearer secret_token\'')
+    .default('headers', {})
     .argv
 
-const Logger = require('logplease')
 const logger = Logger.create('main', {
     useLocalTime: true,
 })
@@ -57,6 +60,7 @@ const settings = {
     warmup_webp: argv.webp,
     warmup_avif: argv.avif,
     purge: parseInt(argv.purge),
+    custom_headers: argv.headers,
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)

@@ -1,14 +1,15 @@
 {
   "name": "datuan-sitemap-warmer",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "main": "./index.js",
+  "type": "module",
   "dependencies": {
     "datuan-sitemap-parser": "0.0.4",
     "logplease": "^1.2.15",
-    "node-fetch": "^2.6.1",
-    "node-html-parser": "^5.1.0",
-    "normalize-url": "^6.1.0",
-    "yargs": "^16.2.0"
+    "node-fetch": "^3.2.3",
+    "node-html-parser": "^5.3.3",
+    "normalize-url": "^7.0.3",
+    "yargs": "^17.3.1"
   },
   "bin": {
     "warmup": "index.js"
@@ -23,6 +24,9 @@
     "warmer"
   ],
   "author": "Argus Duong <hi@duonganhtuan.com> (https://datuan.dev/)",
+  "contributors": [
+    "Robert Michalski (https://github.com/robman87)"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tdtgit/sitemap-warmer/issues"
@@ -32,5 +36,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml"
+  },
+  "engines": {
+    "node": ">=12"
   }
 }
