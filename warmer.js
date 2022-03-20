@@ -96,11 +96,14 @@ export default class Warmer {
     async purge(url) {
         logger.debug(`  ⚡️ Purging ${url}`)
         await fetch(url, {
-            "headers": {
-                "cache-control": "no-cache",
-                "pragma": "no-cache",
-                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
-            },
+            "headers": Object.assign(
+                {
+                    "cache-control": "no-cache",
+                    "pragma": "no-cache",
+                    "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
+                },
+                headers
+            ),
             "body": null,
             "method": "PURGE",
             "mode": "cors"

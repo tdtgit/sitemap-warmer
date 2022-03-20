@@ -60,7 +60,7 @@ const settings = {
     warmup_webp: argv.webp,
     warmup_avif: argv.avif,
     purge: parseInt(argv.purge),
-    custom_headers: argv.headers
+    custom_headers: argv.headers,
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)
