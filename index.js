@@ -33,6 +33,8 @@ const argv = require('yargs/yargs')(process.argv.slice(2))
     .alias('p', 'purge')
     .describe('purge', 'Enable purging the resources before warm up.')
     .default('purge', 0)
+    .describe('headers', 'Add custom headers with warmup request. Example --headers.auth \'Bearer secret_token\'')
+    .default('headers', {})
     .argv
 
 const Logger = require('logplease')
@@ -57,6 +59,7 @@ const settings = {
     warmup_webp: argv.webp,
     warmup_avif: argv.avif,
     purge: parseInt(argv.purge),
+    custom_headers: argv.headers,
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)
