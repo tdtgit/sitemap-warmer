@@ -90,8 +90,10 @@ warmup datuan.dev <URL> <parameter>
 | `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
 | `-h`, `--headers`    | Add custom headers                                                                                                | None            |
 
-## Custom headers
+## Advanced options
+### Custom request headers
 
 ```
 warmup datuan.dev --headers.auth "Bearer super_secret" --headers.user-agent "My own crawler"
 ```
+...
