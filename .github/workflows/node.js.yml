@@ -26,8 +26,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - run: docker build -t sitemap-warmer:local .
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Build and push image
+        env:
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker buildx build --push --platform linux/arm/v7,linux/arm64,linux/amd64 -t sitemap-warmer:local .
       - run: docker save sitemap-warmer:local > sitemap-warmer.tar
       - name: Upload local Docker image
         uses: actions/upload-artifact@v2
