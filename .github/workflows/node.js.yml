@@ -33,11 +33,13 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - name: Build image
+      - name: Build multi-arch image
         run: |
           docker buildx build --platform linux/arm/v7,linux/arm64,linux/amd64 -t tdtgit/sitemap-warmer:local .
-          docker images
-          docker save tdtgit/sitemap-warmer:local > sitemap-warmer.tar
+      - name: Build testing image
+        run: |
+          docker build -t sitemap-warmer:local .
+          docker save sitemap-warmer:local > sitemap-warmer.tar
       - name: Upload local Docker image
         uses: actions/upload-artifact@v2
         with:
