@@ -35,9 +35,9 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Build image
         run: |
-          docker buildx build --platform linux/arm/v7,linux/arm64,linux/amd64 -t sitemap-warmer:local .
-      - run: docker images
-      - run: docker save sitemap-warmer:local > sitemap-warmer.tar
+          docker buildx build --platform linux/arm/v7,linux/arm64,linux/amd64 -t -t tdtgit/sitemap-warmer:local .
+          docker images
+          docker save tdtgit/sitemap-warmer:local > sitemap-warmer.tar
       - name: Upload local Docker image
         uses: actions/upload-artifact@v2
         with:
