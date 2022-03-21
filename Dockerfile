@@ -1,8 +1,12 @@
-FROM node:16-alpine
+FROM node:12-alpine as base
 LABEL maintainer="hi@duonganhtuan.com"
 
-WORKDIR /usr/app
-COPY ./ /usr/app
-RUN npm install
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --prod
 
+FROM mhart/alpine-node:slim-12
+
+COPY --from=base /app /
+COPY . .
 ENTRYPOINT ["node", "index.js"]

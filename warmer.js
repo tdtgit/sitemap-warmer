@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import Logger  from 'logplease'
-import HTMLParser from 'node-html-parser'
+import { parse } from 'node-html-parser'
 import utils from './utilities.js'
 
 const logger = Logger.create('warmer')
@@ -144,7 +144,7 @@ export default class Warmer {
     }
 
     html(html) {
-        const root = HTMLParser.parse(html)
+        const root = parse(html)
 
         if (this.settings.warmup_js) {
             const scripts = root.querySelectorAll('script[src]')
