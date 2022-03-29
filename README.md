@@ -91,6 +91,9 @@ warmup datuan.dev <URL> <parameter>
 | `--no-js`    | Disable Javascript warm up                                                                                               | False                |
 | `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
 | `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
+| `-p`, `--purge`    | Purge resource before warm up                                                                                                | 0            |
+| `-pd`, `--purgedelay`    | Delay (in milliseconds) after purging resource before warm up                                                                                                | 100            |
+| `-pp`, `--purgepath`    | Path to purge resource using GET method before warm up                                                                                                | None            |
 | `-h`, `--headers`    | Add custom headers                                                                                                | None            |
 
 ## Advanced options
