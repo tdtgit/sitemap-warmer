@@ -85,7 +85,7 @@ warmup datuan.dev <URL> <parameter>
 |------------------	|---------------------------------------------------------------------------------------------------------------------	|-----------------	|
 | `-a`, `--all`        | Warm up all URLs in sitemap                                                                                            | False            |
 | `-r`, `--range`    | Only warm up URLs with `lastMod` newer than X seconds.<br> This parameters is ignored if `-a` (`--all`) is provided    | 300s (5 minutes)    |
-| `-d`, `--delay`    | Delay (in miliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher        | 500                |
+| `-d`, `--delay`    | Delay (in milliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher        | 500                |
 | `--no-images`    | Disable images warm up                                                                                               | False                |
 | `--no-css`    | Disable CSS warm up                                                                                               | False                |
 | `--no-js`    | Disable Javascript warm up                                                                                               | False                |
