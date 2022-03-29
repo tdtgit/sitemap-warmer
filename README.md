@@ -21,7 +21,7 @@ with a higher value. See [Options](#options) section for more details.
 
 ## Quick start with Docker
 
-```
+```shell
 docker run tdtgit/sitemap-warmer yourdomain.com
 ```
 
@@ -29,7 +29,7 @@ For more options and parameters, please refer to [Options](#options) section.
 
 ## Requirements
 (In case you don't have Docker installation)
-* NodeJS 10/12/14
+* NodeJS 12/14/16+
 * Ubuntu/CentOS/*nix or Windows/MacOS
 * A website has a sitemap.xml endpoint. Example: https://datuan.dev/sitemap.xml. Tested and worked well with
   plugins [RankMath SEO](https://rankmath.com/kb/configure-sitemaps/), [Yoast SEO](https://yoast.com/help/xml-sitemaps-in-the-wordpress-seo-plugin/), [Jetpack](https://jetpack.com/).
@@ -38,14 +38,14 @@ For more options and parameters, please refer to [Options](#options) section.
 
 Install NodeJS and install the utility by command below:
 
-```
+```shell
 npm install -g datuan-sitemap-warmer
 ```
 
 Then you can try to scan and warm up some sites using a simple command. Replace `datuan.dev` to your site's domain.
 Protocol (`https://`) is a default option and only specific if your site are still running `http://`
 
-```
+```shell
 warmup datuan.dev
 # OR
 warmup http://nonhttps.com
@@ -53,31 +53,31 @@ warmup http://nonhttps.com
 
 You can (should) setup a cronjob to run your command automatically. The recommendation interval is every minute.
 
-```
+```cron
 * * * * * warmup datuan.dev
 ```
 
 For best practice, add another cronjob to warm up all URLs in sitemap in case any URL not warmed up yet. See more
 at [Options](#options) section.
 
-```
-0 */12 * * * warmup datuan.dev -a
-* * * * * warmup datuan.dev
+```cron
+0 */12 * * *  warmup datuan.dev -a
+* * * * *     warmup datuan.dev
 ```
 
 You can also warm up multiple domains of course.
 
-```
-* * * * * warmup http://domain1.com
-*/2 * * * * warmup domain2.net
-*/5 * * * * warmup domain3.xyz
+```cron
+* * * * *     warmup http://domain1.com
+*/2 * * * *   warmup domain2.net
+*/5 * * * *   warmup domain3.xyz
 ```
 
 ## Options
 
 Usage:
 
-```
+```shell
 warmup datuan.dev <URL> <parameter>
 ```
 
@@ -85,7 +85,7 @@ warmup datuan.dev <URL> <parameter>
 |------------------	|---------------------------------------------------------------------------------------------------------------------	|-----------------	|
 | `-a`, `--all`        | Warm up all URLs in sitemap                                                                                            | False            |
 | `-r`, `--range`    | Only warm up URLs with `lastMod` newer than X seconds.<br> This parameters is ignored if `-a` (`--all`) is provided    | 300s (5 minutes)    |
-| `-d`, `--delay`    | Delay (in miliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher        | 500                |
+| `-d`, `--delay`    | Delay (in milliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher        | 500                |
 | `--no-images`    | Disable images warm up                                                                                               | False                |
 | `--no-css`    | Disable CSS warm up                                                                                               | False                |
 | `--no-js`    | Disable Javascript warm up                                                                                               | False                |
@@ -96,7 +96,7 @@ warmup datuan.dev <URL> <parameter>
 ## Advanced options
 ### Custom request headers
 
-```
+```shell
 warmup datuan.dev --headers.auth "Bearer super_secret" --headers.user-agent "My own crawler"
 ```
 ...
