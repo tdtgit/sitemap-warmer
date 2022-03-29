@@ -51,15 +51,15 @@ const settings = {
     all: argv.all,
     sitemap: process.argv[2],
     domain: null,
-    newer_than: argv.range,
-    delay: argv.delay,
+    newer_than: parseInt(argv.range) || 300,
+    delay: parseInt(argv.delay) || 500,
     warmup_images: argv.images,
     warmup_css: argv.css,
     warmup_js: argv.js,
     warmup_brotli: argv.brotli,
     warmup_webp: argv.webp,
     warmup_avif: argv.avif,
-    purge: parseInt(argv.purge),
+    purge: parseInt(argv.purge) || 0,
     custom_headers: argv.headers,
 }
 
