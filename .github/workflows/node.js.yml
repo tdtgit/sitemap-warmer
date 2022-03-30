@@ -63,7 +63,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
-      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quite
+      - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quiet
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-css
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-js
       - run: node index.js https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-images
@@ -81,7 +81,7 @@ jobs:
           name: docker-image
       - run: docker load -i sitemap-warmer.tar
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml
-      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quite
+      - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --quiet
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-css
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-js
       - run: docker run sitemap-warmer:local https://raw.githubusercontent.com/tdtgit/sitemap-warmer/master/tests/sitemap.xml --no-images

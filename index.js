@@ -30,8 +30,8 @@ const argv = yargs(process.argv.slice(2))
     .default('avif', true)
     .alias('a', 'all')
     .describe('all', 'Ignore --range parameter and warm up all URLs in sitemap')
-    .alias('q', 'quite')
-    .describe('quite', 'Disable debug logging if you feel it\'s too much')
+    .alias('q', 'quiet')
+    .describe('quiet', 'Disable debug logging if you feel it\'s too much')
     .alias('p', 'purge')
     .describe('purge', 'Enable purging the resources before warm up.')
     .default('purge', 0)
@@ -43,7 +43,7 @@ const logger = Logger.create('main', {
     useLocalTime: true,
 })
 
-if (argv.quite) {
+if (argv.quiet) {
     Logger.setLogLevel(Logger.LogLevels.INFO)
 }
 

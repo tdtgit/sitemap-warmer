@@ -90,7 +90,7 @@ warmup datuan.dev <URL> <parameter>
 | `--no-css`    | Disable CSS warm up                                                                                               | False                |
 | `--no-js`    | Disable Javascript warm up                                                                                               | False                |
 | `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
-| `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
+| `-q`, `--quiet`    | Suppress the debug log                                                                                                | False            |
 | `-h`, `--headers`    | Add custom headers                                                                                                | None            |
 
 ## Advanced options
