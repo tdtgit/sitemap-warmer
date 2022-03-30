@@ -157,7 +157,7 @@ Nginx Helper plugin will only purge the cache for changed posts or pages.
 Can use this module running using CRON to warm the purged items or entire site if changes have been made to theme templates that are used on many pages.  
 
 ```shell
-warmup datuan.dev --purge 1 --purgepath "/purge/" --headers.x-purge "my_super_secret_token"
+warmup datuan.dev --purge 1 --purgepath "/purge" --headers.x-purge "my_super_secret_token"
 ```
 
 ```nginx
