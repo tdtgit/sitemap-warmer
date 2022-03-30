@@ -91,9 +91,9 @@ warmup datuan.dev <URL> <parameter>
 | `--no-js`    | Disable Javascript warm up                                                                                               | False                |
 | `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
 | `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
-| `-p`, `--purge`    | Purge resource before warm up                                                                                                | 0            |
-| `-pd`, `--purgedelay`    | Delay (in milliseconds) after purging resource before warm up                                                                                                | 100            |
-| `-pp`, `--purgepath`    | Path to purge resource using GET method before warm up                                                                                                | None            |
+| `-p`, `--purge`    | Purge resource before warm up (>=1 for url, >=2 for images)                                                                                                | 0            |
+| `--purge_delay`    | Delay (in milliseconds) after purging resource before warm up                                                                                                | 100            |
+| `--purge_path`    | Path to purge resource using GET method before warm up                                                                                                | None            |
 | `-h`, `--headers`    | Add custom headers                                                                                                | None            |
 | `--cache_status_header`    | Header to check for cache status                                                                                                | x-cache-status            |
 
@@ -158,7 +158,7 @@ Nginx Helper plugin will only purge the cache for changed posts or pages.
 Can use this module running using CRON to warm the purged items or entire site if changes have been made to theme templates that are used on many pages.  
 
 ```shell
-warmup datuan.dev --purge 1 --purgepath "/purge" --headers.x-purge "my_super_secret_token"
+warmup datuan.dev --purge 1 --purge_path "/purge" --headers.x-purge "my_super_secret_token"
 ```
 
 ```nginx
