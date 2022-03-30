@@ -95,6 +95,7 @@ warmup datuan.dev <URL> <parameter>
 | `-pd`, `--purgedelay`    | Delay (in milliseconds) after purging resource before warm up                                                                                                | 100            |
 | `-pp`, `--purgepath`    | Path to purge resource using GET method before warm up                                                                                                | None            |
 | `-h`, `--headers`    | Add custom headers                                                                                                | None            |
+| `--cache_status_header`    | Header to check for cache status                                                                                                | x-cache-status            |
 
 ## Advanced options
 ### Custom request headers
