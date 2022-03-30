@@ -70,7 +70,7 @@ export default class Warmer {
     }
 
     async warmup_site(url) {
-        logger.debug(`🚀 Warming ${url}`)
+        logger.debug(`🚀 Processing ${url}`)
         if (this.settings.purge >= 1) {
             await this.purge(url)
             await this.sleep(this.settings.purge_delay)
@@ -114,20 +114,35 @@ export default class Warmer {
             headers
         })
 
-        const response = await fetch(purge_url, {
+        const res = await fetch(purge_url, {
             "headers": headers,
             "body": null,
             "method": method,
             "mode": "cors"
         })
-        logger.debug('⚡️ Purged', {
-            status: response.status,
-            headers: response.headers
-        })
+
+        let response, icon
+        switch (res.status) {
+            case 200:
+                icon = `❄`
+                response = 'purged from cache'
+                break
+            case 404:
+                icon = `🐌️`
+                response = 'was not in cache'
+                break
+            case 405:
+                icon = `🚧`
+                response = `${method} method not allowed`
+                break
+        }
+        if (response) {
+            logger.debug(`  ${icon} ${url} ${response} (${res.status})`)
+        }
     }
 
     async fetch(url, headers = { accept: '', accept_encoding: '' }) {
-        logger.debug(`  ⚡️ Warming ${url}`, headers)
+        logger.debug(`  ⚡️ Warming ${url} with headers`, headers)
         const res = await fetch(url, {
             "headers": Object.assign(
                 {
@@ -141,6 +156,27 @@ export default class Warmer {
             "method": "GET",
             "mode": "cors"
         })
+
+        // Headers often used by Nginx proxy/FastCGI caches
+        const cacheStatus = res.headers.get(this.settings.cache_status_header)
+        if (cacheStatus) {
+            let result, icon
+            switch (cacheStatus) {
+                case 'MISS':
+                    icon = `⚡️ `
+                    result = 'warmed'
+                    break;
+                case 'HIT':
+                    icon = `🔥`
+                    result = 'was already warm'
+                    break;
+                case 'BYPASS':
+                    icon = `🚧`
+                    result = 'bypassed'
+                    break;
+            }
+            logger.debug(`  ${icon} Cache ${result} for ${url} (cache ${cacheStatus})`)
+        }
 
         // No need warmup CSS/JS or compressed response
         if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
