@@ -102,18 +102,27 @@ export default class Warmer {
             },
             this.custom_headers
         )
-
-        logger.debug(`  ⚡️ Purging ${url}`, headers)
+        const method = this.settings.purge_url ? "GET" : "PURGE"
 
         const purge_url = this.settings.purge_url
             ? url.replace(this.settings.domain, this.settings.purge_url)
             : url
 
-        await fetch(purge_url, {
+        logger.debug(`  ⚡️ Purging ${url}`, {
+            method,
+            url: purge_url,
+            headers
+        })
+
+        const response = await fetch(purge_url, {
             "headers": headers,
             "body": null,
-            "method": this.settings.purge_url ? "GET" : "PURGE",
+            "method": method,
             "mode": "cors"
+        })
+        logger.debug('⚡️ Purged', {
+            status: response.status,
+            headers: response.headers
         })
     }
 
