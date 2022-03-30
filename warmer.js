@@ -70,7 +70,7 @@ export default class Warmer {
     }
 
     async warmup_site(url) {
-        logger.debug(`🚀 Warming ${url}`)
+        logger.debug(`🚀 Processing ${url}`)
         if (this.settings.purge >= 1) {
             await this.purge(url)
             await this.sleep(100)
@@ -130,7 +130,7 @@ export default class Warmer {
     }
 
     async fetch(url, headers = { accept: '', accept_encoding: '' }) {
-        logger.debug(`  ⚡️ Warming ${url}`, headers)
+        logger.debug(`  ⚡️ Warming ${url} with headers`, headers)
         const res = await fetch(url, {
             "headers": Object.assign(
                 {
