@@ -37,6 +37,8 @@ const argv = yargs(process.argv.slice(2))
     .default('purge', 0)
     .describe('headers', 'Add custom headers with warmup request. Example --headers.auth \'Bearer secret_token\'')
     .default('headers', {})
+    .describe('cache_status_header', 'Header for cache status, can be used with Nginx.')
+    .default('cache_status_header', 'x-cache-status')
     .argv
 
 const logger = Logger.create('main', {
@@ -61,6 +63,7 @@ const settings = {
     warmup_avif: argv.avif,
     purge: parseInt(argv.purge) || 0,
     custom_headers: argv.headers,
+    cache_status_header: argv.cache_status_header,
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)

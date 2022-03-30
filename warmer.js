@@ -126,6 +126,27 @@ export default class Warmer {
             "mode": "cors"
         })
 
+        // Headers often used by Nginx proxy/FastCGI caches
+        const cacheStatus = res.headers.get(this.settings.cache_status_header)
+        if (cacheStatus) {
+            let result, icon
+            switch (cacheStatus) {
+                case 'MISS':
+                    icon = `⚡️ `
+                    result = 'warmed'
+                    break;
+                case 'HIT':
+                    icon = `🔥`
+                    result = 'was already warm'
+                    break;
+                case 'BYPASS':
+                    icon = `🚧`
+                    result = 'bypassed'
+                    break;
+            }
+            logger.debug(`  ${icon} Cache ${result} for ${url} (cache ${cacheStatus})`)
+        }
+
         // No need warmup CSS/JS or compressed response
         if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
             return
