@@ -82,7 +82,7 @@ export default class Warmer {
     }
 
     async warmup_image(image_url) {
-        logger.debug(`🚀📷 Warming ${image_url}`)
+        logger.debug(`🚀📷 Processing ${image_url}`)
         if (this.settings.purge >= 2) {
             await this.purge(image_url)
             await this.sleep(this.settings.purge_delay)
