@@ -95,7 +95,7 @@ export default class Warmer {
 
     async purge(url) {
         logger.debug(`  ⚡️ Purging ${url}`)
-        await fetch(url, {
+        const res = await fetch(url, {
             "headers": Object.assign(
                 {
                     "cache-control": "no-cache",
@@ -108,6 +108,25 @@ export default class Warmer {
             "method": "PURGE",
             "mode": "cors"
         })
+
+        let description, icon
+        switch (res.status) {
+            case 200:
+                icon = `❄`
+                description = 'purged from cache'
+                break
+            case 404:
+                icon = `🐌️`
+                description = 'was not in cache'
+                break
+            case 405:
+                icon = `🚧`
+                description = 'PURGE method not allowed'
+                break
+        }
+        if (description) {
+            logger.debug(`  ${icon} ${url} ${description} (${res.status})`)
+        }
     }
 
     async fetch(url, headers = { accept: '', accept_encoding: '' }) {
