@@ -70,10 +70,10 @@ export default class Warmer {
     }
 
     async warmup_site(url) {
-        logger.debug(`🚀 Warming ${url}`)
+        logger.debug(`🚀 Processing ${url}`)
         if (this.settings.purge >= 1) {
             await this.purge(url)
-            await this.sleep(100)
+            await this.sleep(this.settings.purge_delay)
         }
         for (const accept_encoding of Object.keys(this.accept_encoding)) {
             await this.fetch(url, Object.assign({}, this.custom_headers, {accept_encoding: this.accept_encoding[accept_encoding]}))
@@ -82,10 +82,10 @@ export default class Warmer {
     }
 
     async warmup_image(image_url) {
-        logger.debug(`🚀📷 Warming ${image_url}`)
+        logger.debug(`🚀📷 Processing ${image_url}`)
         if (this.settings.purge >= 2) {
             await this.purge(image_url)
-            await this.sleep(100)
+            await this.sleep(this.settings.purge_delay)
         }
         for (const accept of Object.keys(this.accept)) {
             await this.fetch(image_url, Object.assign({}, this.custom_headers, {accept: this.accept[accept]}))
@@ -94,24 +94,55 @@ export default class Warmer {
     }
 
     async purge(url) {
-        logger.debug(`  ⚡️ Purging ${url}`)
-        await fetch(url, {
-            "headers": Object.assign(
-                {
-                    "cache-control": "no-cache",
-                    "pragma": "no-cache",
-                    "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
-                },
-                headers
-            ),
+        const headers = Object.assign(
+            {
+                "cache-control": "no-cache",
+                "pragma": "no-cache",
+                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
+            },
+            this.custom_headers
+        )
+        const method = this.settings.purge_url ? "GET" : "PURGE"
+
+        const purge_url = this.settings.purge_url
+            ? url.replace(this.settings.domain, this.settings.purge_url)
+            : url
+
+        logger.debug(`  ⚡️ Purging ${url}`, {
+            method,
+            url: purge_url,
+            headers
+        })
+
+        const res = await fetch(purge_url, {
+            "headers": headers,
             "body": null,
-            "method": "PURGE",
+            "method": method,
             "mode": "cors"
         })
+
+        let response, icon
+        switch (res.status) {
+            case 200:
+                icon = `❄`
+                response = 'purged from cache'
+                break
+            case 404:
+                icon = `🐌️`
+                response = 'was not in cache'
+                break
+            case 405:
+                icon = `🚧`
+                response = `${method} method not allowed`
+                break
+        }
+        if (response) {
+            logger.debug(`  ${icon} ${url} ${response} (${res.status})`)
+        }
     }
 
     async fetch(url, headers = { accept: '', accept_encoding: '' }) {
-        logger.debug(`  ⚡️ Warming ${url}`, headers)
+        logger.debug(`  ⚡️ Warming ${url} with headers`, headers)
         const res = await fetch(url, {
             "headers": Object.assign(
                 {
@@ -125,6 +156,27 @@ export default class Warmer {
             "method": "GET",
             "mode": "cors"
         })
+
+        // Headers often used by Nginx proxy/FastCGI caches
+        const cacheStatus = res.headers.get(this.settings.cache_status_header)
+        if (cacheStatus) {
+            let result, icon
+            switch (cacheStatus) {
+                case 'MISS':
+                    icon = `⚡️ `
+                    result = 'warmed'
+                    break;
+                case 'HIT':
+                    icon = `🔥`
+                    result = 'was already warm'
+                    break;
+                case 'BYPASS':
+                    icon = `🚧`
+                    result = 'bypassed'
+                    break;
+            }
+            logger.debug(`  ${icon} Cache ${result} for ${url} (cache ${cacheStatus})`)
+        }
 
         // No need warmup CSS/JS or compressed response
         if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
