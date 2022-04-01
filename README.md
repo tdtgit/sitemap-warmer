@@ -81,17 +81,19 @@ Usage:
 warmup datuan.dev <URL> <parameter>
 ```
 
-| Parameter            | Description                                                                                                            | Default            |
-|------------------	|---------------------------------------------------------------------------------------------------------------------	|-----------------	|
-| `-a`, `--all`        | Warm up all URLs in sitemap                                                                                            | False            |
-| `-r`, `--range`    | Only warm up URLs with `lastMod` newer than X seconds.<br> This parameters is ignored if `-a` (`--all`) is provided    | 300s (5 minutes)    |
-| `-d`, `--delay`    | Delay (in milliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher        | 500                |
-| `--no-images`    | Disable images warm up                                                                                               | False                |
-| `--no-css`    | Disable CSS warm up                                                                                               | False                |
-| `--no-js`    | Disable Javascript warm up                                                                                               | False                |
-| `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
-| `-q`, `--quiet`    | Suppress the debug log                                                                                                | False            |
-| `-h`, `--headers`    | Add custom headers                                                                                                | None            |
+| Parameter           | Description                                                                                                           | Default           |
+|-------------------- |---------------------------------------------------------------------------------------------------------------------  |-----------------  |
+| `-a`, `--all`       | Warm up all URLs in sitemap                                                                                           | False             |
+| `-r`, `--range`     | Only warm up URLs with `lastMod` newer than X seconds.<br> This parameters is ignored if `-a` (`--all`) is provided   | 300s (5 minutes)  |
+| `-d`, `--delay`     | Delay (in milliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher       | 500               |
+| `--images`          | Enables images warm up                                                                                                | True              |
+| `--webp`            | Enables webp images warm up                                                                                           | True              |
+| `--avif`            | Enables avif images warm up                                                                                           | True              |
+| `--css`             | Enables CSS warm up                                                                                                   | True              |
+| `--js`              | Enables Javascript warm up                                                                                            | True              |
+| `--brotli`          | Enables Brotli compression warm up (all modern browsers support it)                                                   | True              |
+| `-q`, `--quiet`     | Suppress the debug log                                                                                                | False             |
+| `-h`, `--headers`   | Add custom headers                                                                                                    | None              |
 
 ## Advanced options
 ### Custom request headers
