@@ -6,7 +6,9 @@ import utils from './utilities.js'
 import fetch from 'node-fetch'
 import Logger from 'logplease'
 import yargs from 'yargs'
-const argv = yargs(process.argv.slice(2))
+import { hideBin } from 'yargs/helpers'
+
+const argv = yargs(hideBin(process.argv))
     .usage('Usage: $0' + ' domain.com')
     .alias('v', 'version')
     .alias('h', 'help')
