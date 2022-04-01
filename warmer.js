@@ -96,7 +96,7 @@ export default class Warmer {
     async purge(url) {
         logger.debug(`  ⚡️ Purging ${url}`)
         await fetch(url, {
-            "headers": Object.assign(
+            headers: Object.assign(
                 {
                     "cache-control": "no-cache",
                     "pragma": "no-cache",
@@ -104,16 +104,16 @@ export default class Warmer {
                 },
                 this.custom_headers
             ),
-            "body": null,
-            "method": "PURGE",
-            "mode": "cors"
+            body: null,
+            method: "PURGE",
+            mode: "cors"
         })
     }
 
     async fetch(url, headers = { accept: '', accept_encoding: '' }) {
         logger.debug(`  ⚡️ Warming ${url}`, headers)
         const res = await fetch(url, {
-            "headers": Object.assign(
+            headers: Object.assign(
                 {
                     "cache-control": "no-cache",
                     "pragma": "no-cache",
@@ -121,9 +121,9 @@ export default class Warmer {
                 },
                 headers
             ),
-            "body": null,
-            "method": "GET",
-            "mode": "cors"
+            body: null,
+            method: "GET",
+            mode: "cors"
         })
 
         // No need warmup CSS/JS or compressed response
