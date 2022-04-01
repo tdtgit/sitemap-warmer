@@ -61,7 +61,8 @@ const settings = {
     warmup_brotli: argv.brotli,
     warmup_webp: argv.webp,
     warmup_avif: argv.avif,
-    purge: parseInt(argv.purge) || 0,
+    purge: parseInt(argv.purge) >= 1,
+    purge_images: parseInt(argv.purge) >= 2,
     custom_headers: argv.headers,
 }
 

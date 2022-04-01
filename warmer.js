@@ -70,8 +70,8 @@ export default class Warmer {
     }
 
     async warmup_site(url) {
-        logger.debug(`🚀 Warming ${url}`)
-        if (this.settings.purge >= 1) {
+        logger.debug(`🚀 Processing ${url}`)
+        if (this.settings.purge) {
             await this.purge(url)
             await this.sleep(100)
         }
@@ -82,8 +82,8 @@ export default class Warmer {
     }
 
     async warmup_image(image_url) {
-        logger.debug(`🚀📷 Warming ${image_url}`)
-        if (this.settings.purge >= 2) {
+        logger.debug(`🚀📷 Processing ${image_url}`)
+        if (this.settings.purge_images) {
             await this.purge(image_url)
             await this.sleep(100)
         }
