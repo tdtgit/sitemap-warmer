@@ -146,7 +146,7 @@ export default class Warmer {
         })
 
         // Headers often used by Nginx proxy/FastCGI caches
-        const cacheStatus = res.headers.get(this.settings.cache_status_header)
+        const cacheStatus = res.headers.get(this.settings.cache_status_header).toUpperCase();
         if (cacheStatus) {
             let result, icon
             switch (cacheStatus) {
@@ -166,7 +166,7 @@ export default class Warmer {
             logger.debug(`  ${icon} Cache ${result} for ${url} (cache ${cacheStatus})`)
         }
 
-        // No need warmup CSS/JS or compressed response
+        // No need warmup CSS/JS or compressed responses
         if (this.settings.warmup_css === false && this.settings.warmup_js === false) {
             return
         }
