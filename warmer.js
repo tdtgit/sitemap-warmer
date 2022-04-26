@@ -104,7 +104,7 @@ export default class Warmer {
                     "pragma": "no-cache",
                     "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
                 },
-                headers
+                this.custom_headers
             ),
             "body": null,
             "method": "PURGE",
