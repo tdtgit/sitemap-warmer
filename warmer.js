@@ -2,6 +2,8 @@ import fetch from 'node-fetch'
 import Logger  from 'logplease'
 import { parse } from 'node-html-parser'
 import utils from './utilities.js'
+import http from 'node:http'
+import https from 'node:https'
 
 const logger = Logger.create('warmer')
 
@@ -76,7 +78,7 @@ export default class Warmer {
             await this.sleep(100)
         }
         for (const accept_encoding of Object.keys(this.accept_encoding)) {
-            await this.fetch(url, Object.assign({}, this.custom_headers, {accept_encoding: this.accept_encoding[accept_encoding]}))
+            await this.warmup_url(url, Object.assign({}, this.custom_headers, {accept_encoding: this.accept_encoding[accept_encoding]}))
             await this.sleep(this.settings.delay)
         }
     }
@@ -88,14 +90,14 @@ export default class Warmer {
             await this.sleep(100)
         }
         for (const accept of Object.keys(this.accept)) {
-            await this.fetch(image_url, Object.assign({}, this.custom_headers, {accept: this.accept[accept]}))
+            await this.warmup_url(image_url, Object.assign({}, this.custom_headers, {accept: this.accept[accept]}))
             await this.sleep(this.settings.delay)
         }
     }
 
     async purge(url) {
         logger.debug(`  ⚡️ Purging ${url}`)
-        await fetch(url, {
+        await this.fetch(url, {
             "headers": Object.assign(
                 {
                     "cache-control": "no-cache",
@@ -110,9 +112,9 @@ export default class Warmer {
         })
     }
 
-    async fetch(url, headers = { accept: '', accept_encoding: '' }) {
+    async warmup_url(url, headers = { accept: '', accept_encoding: '' }) {
         logger.debug(`  ⚡️ Warming ${url}`, headers)
-        const res = await fetch(url, {
+        const res = await this.fetch(url, {
             "headers": Object.assign(
                 {
                     "cache-control": "no-cache",
@@ -137,6 +139,21 @@ export default class Warmer {
         // Send HTML response for parsing CSS/JS
         const data = await res.text()
         this.html(data)
+    }
+
+    async fetch(url, options) {
+        if (this.settings.ip) {
+            const { host } = new URL(url)
+            options.headers.host = host
+
+            const httpMod = this.settings.sitemap.protocol === 'https:' ? https : http
+            options.agent = () => new httpMod.Agent({ servername: host })
+            url = url.replace(host, this.settings.ip)
+
+            logger.debug(`${options.method.toUpperCase()} ${url} with host ${host}`)
+        }
+
+        return fetch(url, options)
     }
 
     async sleep(millis) {
