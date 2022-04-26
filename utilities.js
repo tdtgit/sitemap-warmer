@@ -35,6 +35,7 @@ class Utilities {
             stripHash: true,
             sortQueryParameters: true,
             removeTrailingSlash: false,
+            stripWWW: false
         })
     }
 
