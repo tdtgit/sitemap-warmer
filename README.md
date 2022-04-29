@@ -78,7 +78,7 @@ You can also warm up multiple domains of course.
 Usage:
 
 ```shell
-warmup datuan.dev <URL> <parameter>
+warmup <URL> <parameters>
 ```
 
 | Parameter           | Description                                                                                                           | Default           |
@@ -91,9 +91,10 @@ warmup datuan.dev <URL> <parameter>
 | `--avif`            | Enables avif images warm up                                                                                           | True              |
 | `--css`             | Enables CSS warm up                                                                                                   | True              |
 | `--js`              | Enables Javascript warm up                                                                                            | True              |
-| `--brotli`          | Enables Brotli compression warm up (all modern browsers support it)                                                   | True              |
+| `--brotli`          | Enables Brotli compression warm up. Used by all modern browsers, "Accept Encoding: gzip, deflate, br".                | True              |
 | `-q`, `--quiet`     | Suppress the debug log                                                                                                | False             |
-| `-h`, `--headers`   | Add custom headers                                                                                                    | None              |
+| `-h`, `--headers`   | Add custom headers, for instance Host, Authorization, User-Agent etc.                                                 | None              |
+| `-p`, `--purge`     | Purge resource before warm up, 0 = purging disabled, 1 >= content, 2 >= images                                        | 0                 |
 
 ## Advanced options
 ### Custom request headers

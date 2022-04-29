@@ -46,40 +46,40 @@ const argv = yargs(hideBin(process.argv))
     .option('img', {
         alias: 'images',
         describe: 'Enable images warm up.',
-        type: 'boolean',
+        type: 'string',
         coerce: toBoolean,
         default: true
     })
 
     .option('css', {
-        describe: 'Enable CSS images warm up.',
-        type: 'boolean',
+        describe: 'Enable CSS warm up.',
+        type: 'string',
         coerce: toBoolean,
         default: true
     })
     .option('js', {
-        describe: 'Enable Javascript images warm up.',
-        type: 'boolean',
+        describe: 'Enable Javascript warm up.',
+        type: 'string',
         coerce: toBoolean,
         default: true
     })
 
     .option('webp', {
         describe: 'Enable WebP images warm up.',
-        type: 'boolean',
+        type: 'string',
         coerce: toBoolean,
         default: true
     })
     .option('avif', {
         describe: 'Enable AVIF images warm up.',
-        type: 'boolean',
+        type: 'string',
         coerce: toBoolean,
         default: true
     })
 
     .option('brotli', {
-        describe: 'Enable Brotli compress warm up (Requested by all modern browsers)',
-        type: 'boolean',
+        describe: 'Enable Brotli compress warm up (Used by all modern browsers, "Accept Encoding: gzip, deflate, br")',
+        type: 'string',
         coerce: toBoolean,
         default: true
     })
@@ -95,7 +95,7 @@ const argv = yargs(hideBin(process.argv))
 
     .option('headers', {
         default: {},
-        describe: 'Add custom headers with warmup request.',
+        describe: 'Add custom headers with warmup request. For instance Host, Authorization, User-Agent etc.',
     })
     .example('$0 domain.com --headers.authorization "Bearer secret_token"', 'Add custom auth header')
 
