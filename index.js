@@ -97,7 +97,7 @@ const argv = yargs(hideBin(process.argv))
         default: {},
         describe: 'Add custom headers with warmup request.',
     })
-    .example('$0 domain.com --headers.auth "Bearer secret_token"', 'Add custom auth header')
+    .example('$0 domain.com --headers.authorization "Bearer secret_token"', 'Add custom auth header')
 
     .argv
 

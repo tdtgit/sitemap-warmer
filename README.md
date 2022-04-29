@@ -99,7 +99,7 @@ warmup datuan.dev <URL> <parameter>
 ### Custom request headers
 
 ```shell
-warmup datuan.dev --headers.auth "Bearer super_secret" --headers.user-agent "My own crawler"
+warmup datuan.dev --headers.authorization "Bearer super_secret" --headers.user-agent "My own crawler"
 ```
 ...
 
