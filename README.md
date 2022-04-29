@@ -78,26 +78,29 @@ You can also warm up multiple domains of course.
 Usage:
 
 ```shell
-warmup datuan.dev <URL> <parameter>
+warmup <URL> <parameters>
 ```
 
-| Parameter            | Description                                                                                                            | Default            |
-|------------------	|---------------------------------------------------------------------------------------------------------------------	|-----------------	|
-| `-a`, `--all`        | Warm up all URLs in sitemap                                                                                            | False            |
-| `-r`, `--range`    | Only warm up URLs with `lastMod` newer than X seconds.<br> This parameters is ignored if `-a` (`--all`) is provided    | 300s (5 minutes)    |
-| `-d`, `--delay`    | Delay (in milliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher        | 500                |
-| `--no-images`    | Disable images warm up                                                                                               | False                |
-| `--no-css`    | Disable CSS warm up                                                                                               | False                |
-| `--no-js`    | Disable Javascript warm up                                                                                               | False                |
-| `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
-| `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
-| `-h`, `--headers`    | Add custom headers                                                                                                | None            |
+| Parameter           | Description                                                                                                           | Default           |
+|-------------------- |---------------------------------------------------------------------------------------------------------------------  |-----------------  |
+| `-a`, `--all`       | Warm up all URLs in sitemap                                                                                           | False             |
+| `-r`, `--range`     | Only warm up URLs with `lastMod` newer than X seconds.<br> This parameters is ignored if `-a` (`--all`) is provided   | 300s (5 minutes)  |
+| `-d`, `--delay`     | Delay (in milliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher       | 500               |
+| `--img`, --images`  | Enables images warm up                                                                                                | True              |
+| `--webp`            | Enables webp images warm up                                                                                           | True              |
+| `--avif`            | Enables avif images warm up                                                                                           | True              |
+| `--css`             | Enables CSS warm up                                                                                                   | True              |
+| `--js`              | Enables Javascript warm up                                                                                            | True              |
+| `--brotli`          | Enables Brotli compression warm up. Used by all modern browsers, "Accept Encoding: gzip, deflate, br".                | True              |
+| `-q`, `--quiet`     | Suppress the debug log                                                                                                | False             |
+| `-h`, `--headers`   | Add custom headers, for instance Host, Authorization, User-Agent etc.                                                 | None              |
+| `-p`, `--purge`     | Purge resource before warm up, 0 = purging disabled, 1 >= content, 2 >= images                                        | 0                 |
 
 ## Advanced options
 ### Custom request headers
 
 ```shell
-warmup datuan.dev --headers.auth "Bearer super_secret" --headers.user-agent "My own crawler"
+warmup datuan.dev --headers.authorization "Bearer super_secret" --headers.user-agent "My own crawler"
 ```
 ...
 
