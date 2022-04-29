@@ -73,7 +73,7 @@ export default class Warmer {
         logger.debug(`🚀 Processing ${url}`)
         if (this.settings.purge >= 1) {
             await this.purge(url)
-            await this.sleep(100)
+            await this.sleep(this.settings.purge_delay)
         }
         for (const accept_encoding of Object.keys(this.accept_encoding)) {
             await this.fetch(url, Object.assign({}, this.custom_headers, {accept_encoding: this.accept_encoding[accept_encoding]}))
@@ -85,7 +85,7 @@ export default class Warmer {
         logger.debug(`🚀📷 Warming ${image_url}`)
         if (this.settings.purge >= 2) {
             await this.purge(image_url)
-            await this.sleep(100)
+            await this.sleep(this.settings.purge_delay)
         }
         for (const accept of Object.keys(this.accept)) {
             await this.fetch(image_url, Object.assign({}, this.custom_headers, {accept: this.accept[accept]}))
@@ -94,18 +94,30 @@ export default class Warmer {
     }
 
     async purge(url) {
-        logger.debug(`  ⚡️ Purging ${url}`)
-        const res = await fetch(url, {
-            "headers": Object.assign(
-                {
-                    "cache-control": "no-cache",
-                    "pragma": "no-cache",
-                    "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
-                },
-                this.custom_headers
-            ),
+        const headers = Object.assign(
+            {
+                "cache-control": "no-cache",
+                "pragma": "no-cache",
+                "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
+            },
+            this.custom_headers
+        )
+        const method = this.settings.purge_url ? "GET" : "PURGE"
+
+        const purge_url = this.settings.purge_url
+            ? url.replace(this.settings.domain, this.settings.purge_url)
+            : url
+
+        logger.debug(`  ⚡️ Purging ${url}`, {
+            method,
+            url: purge_url,
+            headers
+        })
+
+        const response = await fetch(purge_url, {
+            "headers": headers,
             "body": null,
-            "method": "PURGE",
+            "method": method,
             "mode": "cors"
         })
 
