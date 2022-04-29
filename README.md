@@ -91,6 +91,9 @@ warmup datuan.dev <URL> <parameter>
 | `--no-js`    | Disable Javascript warm up                                                                                               | False                |
 | `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
 | `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
+| `-p`, `--purge`    | Purge resource before warm up                                                                                                | 0            |
+| `-pd`, `--purgedelay`    | Delay (in milliseconds) after purging resource before warm up                                                                                                | 100            |
+| `-pp`, `--purgepath`    | Path to purge resource using GET method before warm up                                                                                                | None            |
 | `-h`, `--headers`    | Add custom headers                                                                                                | None            |
 
 ## Advanced options
@@ -99,9 +102,95 @@ warmup datuan.dev <URL> <parameter>
 ```shell
 warmup datuan.dev --headers.auth "Bearer super_secret" --headers.user-agent "My own crawler"
 ```
-...
 
-## Contributors ✨
+#### Securing Nginx purge cache module
+
+Usually nginx geo module is used to only allow purging cache from certain IP addresses.
+Sometimes IP of client that should PURGE cache is not known or during development/testing it's just easier to use a long secret token to allow purging cache.
+
+Requires support for proxy_cache_purge or fastcgi_cache_purge.
+Can be installed using nginx-extras on Ubuntu/Debian
+
+```shell
+apt install nginx-extras
+```
+
+##### Example Nginx config for Cache Purge using secret header and PURGE method
+
+```shell
+warmup datuan.dev --purge 1 --headers.x-purge "my_super_secret_token"
+```
+
+```nginx
+http {
+  # ...
+  proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m purger=on;
+
+  map $http_x_purge $purge_allowed {
+      my_super_secret_token  1;
+      default 0;
+  }
+  # $purge_allowed is used to enable PURGE method instad of just setting PURGE to 1
+  map $request_method $purge_method {
+     PURGE   $purge_allowed;
+     default 0;
+  }
+
+  server {
+        listen      80;
+        server_name www.example.com;
+
+        location / {
+            proxy_pass        https://localhost:8080;
+            proxy_cache       my_cache;
+            proxy_cache_purge $purge_method;
+        }
+    }
+```
+
+##### Example Nginx config for Cache Purge using secret header and custom GET path
+
+This config can be used when PURGE method is not available or preferred.
+
+For instance a WordPress site using nginx-helper plugin.
+Nginx Helper plugin will only purge the cache for changed posts or pages.
+Can use this module running using CRON to warm the purged items or entire site if changes have been made to theme templates that are used on many pages.  
+
+```shell
+warmup datuan.dev --purge 1 --purgepath "/purge" --headers.x-purge "my_super_secret_token"
+```
+
+```nginx
+http {
+  # ...
+  proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m purger=on;
+  proxy_cache_key "$scheme$request_method$host$request_uri";
+  
+
+  map $http_x_purge $purge_allowed {
+      my_super_secret_token  1;
+      default 0;
+  }
+
+  server {
+        listen      80;
+        server_name www.example.com;
+
+        location / {
+            proxy_pass        https://localhost:8080;
+            proxy_cache       my_cache;
+        }
+        
+        location ~ /purge(/.*) {
+            if ($purge_allowed != 1) {
+              return 403;
+            }
+            proxy_cache_purge my_cache "$scheme$request_method$host$1";
+        }
+    }
+```
+
+# Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
