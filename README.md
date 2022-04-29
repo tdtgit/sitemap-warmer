@@ -86,7 +86,7 @@ warmup <URL> <parameters>
 | `-a`, `--all`       | Warm up all URLs in sitemap                                                                                           | False             |
 | `-r`, `--range`     | Only warm up URLs with `lastMod` newer than X seconds.<br> This parameters is ignored if `-a` (`--all`) is provided   | 300s (5 minutes)  |
 | `-d`, `--delay`     | Delay (in milliseconds) between each warm up call.<br> If you using the low-end hosting, keep this value higher       | 500               |
-| `--images`          | Enables images warm up                                                                                                | True              |
+| `--img`, --images`  | Enables images warm up                                                                                                | True              |
 | `--webp`            | Enables webp images warm up                                                                                           | True              |
 | `--avif`            | Enables avif images warm up                                                                                           | True              |
 | `--css`             | Enables CSS warm up                                                                                                   | True              |
