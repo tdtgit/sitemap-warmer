@@ -1,4 +1,4 @@
-FROM node:12-alpine as base
+FROM node:12-alpine
 LABEL maintainer="hi@duonganhtuan.com"
 
 WORKDIR /app
@@ -7,6 +7,6 @@ RUN npm ci --prod
 
 FROM mhart/alpine-node:slim-12
 
-COPY --from=base /app /
+COPY --from=0 /app /
 COPY . .
 ENTRYPOINT ["node", "index.js"]
