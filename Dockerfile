@@ -1,12 +1,10 @@
-FROM node:12-alpine
+FROM node:16-alpine
 LABEL maintainer="hi@duonganhtuan.com"
 
 WORKDIR /app
+
 COPY package.json package-lock.json ./
 RUN npm ci --prod
 
-FROM mhart/alpine-node:slim-12
-
-COPY --from=0 /app /
 COPY . .
-ENTRYPOINT ["node", "index.js"]
+ENTRYPOINT [ "node" , "/app/index.js"]
