@@ -41,6 +41,8 @@ const argv = yargs(process.argv.slice(2))
     .default('purgepath', '')
     .describe('headers', 'Add custom headers with warmup request. Example --headers.auth \'Bearer secret_token\'')
     .default('headers', {})
+    .describe('cache_status_header', 'Header for cache status, can be used with Nginx.')
+    .default('cache_status_header', 'x-cache-status')
     .argv
 
 const logger = Logger.create('main', {
@@ -67,6 +69,7 @@ const settings = {
     purge_delay: parseInt(argv.purgedelay) || 100,
     purge_path: argv.purgepath,
     custom_headers: argv.headers,
+    cache_status_header: argv.cache_status_header,
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)
