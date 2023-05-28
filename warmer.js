@@ -70,8 +70,8 @@ export default class Warmer {
     }
 
     async warmup_site(url) {
-        logger.debug(`🚀 Warming ${url}`)
-        if (this.settings.purge >= 1) {
+        logger.debug(`🚀 Processing ${url}`)
+        if (this.settings.purge) {
             await this.purge(url)
             await this.sleep(100)
         }
@@ -82,8 +82,8 @@ export default class Warmer {
     }
 
     async warmup_image(image_url) {
-        logger.debug(`🚀📷 Warming ${image_url}`)
-        if (this.settings.purge >= 2) {
+        logger.debug(`🚀📷 Processing ${image_url}`)
+        if (this.settings.purge_images) {
             await this.purge(image_url)
             await this.sleep(100)
         }
@@ -96,24 +96,24 @@ export default class Warmer {
     async purge(url) {
         logger.debug(`  ⚡️ Purging ${url}`)
         await fetch(url, {
-            "headers": Object.assign(
+            headers: Object.assign(
                 {
                     "cache-control": "no-cache",
                     "pragma": "no-cache",
                     "user-agent": 'datuan.dev - Cache Warmer (https://github.com/tdtgit/sitemap-warmer)'
                 },
-                headers
+                this.custom_headers
             ),
-            "body": null,
-            "method": "PURGE",
-            "mode": "cors"
+            body: null,
+            method: "PURGE",
+            mode: "cors"
         })
     }
 
     async fetch(url, headers = { accept: '', accept_encoding: '' }) {
         logger.debug(`  ⚡️ Warming ${url}`, headers)
         const res = await fetch(url, {
-            "headers": Object.assign(
+            headers: Object.assign(
                 {
                     "cache-control": "no-cache",
                     "pragma": "no-cache",
@@ -121,9 +121,9 @@ export default class Warmer {
                 },
                 headers
             ),
-            "body": null,
-            "method": "GET",
-            "mode": "cors"
+            body: null,
+            method: "GET",
+            mode: "cors"
         })
 
         // No need warmup CSS/JS or compressed response
