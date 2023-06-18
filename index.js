@@ -37,6 +37,8 @@ const argv = yargs(process.argv.slice(2))
     .default('purge', 0)
     .describe('headers', 'Add custom headers with warmup request. Example --headers.auth \'Bearer secret_token\'')
     .default('headers', {})
+    .describe('ip', 'IP to call with host header as SNI to use correct SSL/TLS cert.')
+    .default('ip', '')
     .argv
 
 const logger = Logger.create('main', {
@@ -61,6 +63,7 @@ const settings = {
     warmup_avif: argv.avif,
     purge: parseInt(argv.purge) || 0,
     custom_headers: argv.headers,
+    ip: argv.ip
 }
 
 settings.sitemap = utils.tryValidURL(settings.sitemap)

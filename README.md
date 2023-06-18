@@ -92,6 +92,7 @@ warmup datuan.dev <URL> <parameter>
 | `--no-brotli`    | Disable Brotli compression warm up                                                                                               | False                |
 | `-q`, `--quite`    | Suppress the debug log                                                                                                | False            |
 | `-h`, `--headers`    | Add custom headers                                                                                                | None            |
+| `--ip`                  | IP (v4 or v6) address to call when purging and caching, useful for secondary server/proxy/load-balancer.              | None              |
 
 ## Advanced options
 ### Custom request headers
@@ -99,7 +100,21 @@ warmup datuan.dev <URL> <parameter>
 ```shell
 warmup datuan.dev --headers.auth "Bearer super_secret" --headers.user-agent "My own crawler"
 ```
-...
+
+### Purge IP with SSL/TLS
+Useful for purging a secondary server/load-balancer/proxy, for instance in case of fail-over, migration or backup.
+Make sure the secondary server has a warm cache.
+
+```shell
+warmup datuan.dev --purge 1 --ip 1.2.3.4
+```
+
+Will call https://1.2.3.4 with host header datuan.dev and use the correct SSL/TLS certificate.
+
+Using IP with https like below will result in "ERR_TLS_CERT_ALTNAME_INVALID" because the IP is usually not in included in the altnames of certificates.
+```shell
+warmup https://1.2.3.4 --purge 1 --headers.host datuan.dev
+```
 
 ## Contributors ✨
 
